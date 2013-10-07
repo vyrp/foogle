@@ -1,9 +1,10 @@
-
+  
 var a;
 window.fbAsyncInit = function() {
   // init the FB JS SDK
   FB.init({
-    appId      : '394904207304456',                        // App ID from the app dashboard
+   // appId      : '394904207304456',                        // App ID from the app dashboard
+    appId       :  '336910786453085',
     channelUrl : '//appfoogle.appspot.com/channel.html', // Channel file for x-domain comms
     status     : true,                                 // Check Facebook Login status
     xfbml      : true                                  // Look for social plugins on the page
