@@ -11,14 +11,14 @@ window.fbAsyncInit = function() {
   // Additional initialization code such as adding Event Listeners goes here
 
   FB.Event.subscribe('auth.authResponseChange', function(response) {
-		if (response.status === 'connected') {
-			testAPI();
-		} else if (response.status === 'not_authorized') {
-			FB.login();
-		} else {
-			FB.login();
-		}
-	});
+    if (response.status === 'connected') {
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      FB.login();
+    } else {
+      FB.login();
+    }
+  });
 };
 
 // Load the SDK asynchronously
@@ -38,6 +38,6 @@ function testAPI() {
     query: 'SELECT body FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
   },
   function(response) {
-		createDiccionary(response);
+    createDiccionary(response);
   });
 } 
