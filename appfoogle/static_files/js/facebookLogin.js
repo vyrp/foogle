@@ -35,7 +35,7 @@ function testAPI() {
   FB.api(
   {
     method: 'fql.query',
-    query: 'SELECT body FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
+    query: 'SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
   },
   function(response) {
     createDiccionary(response);
