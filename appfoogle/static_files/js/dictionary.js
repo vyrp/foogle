@@ -1,18 +1,4 @@
-function verify(array, json){
-  for(var i=0; i<array.length; i++){
-    console.log(i + " <<" + json[array[i]] + ">>");
-  }
-}
-
-function transform(json){
-  dic = {};
-  for(var i=0; i<json.length; i++){
-    dic[json[i].message_id] = json[i].body;
-  }
-  return dic;
-}
-
-function size(dictionary){
+ï»¿function size(dictionary){
   var sum = 0;
   for(var elem in dictionary){
     sum++;
@@ -34,14 +20,14 @@ function max(dictionary){
 
 function normalize(word){
   return word.toLowerCase()
-             .replace(/[áâàãä]/, 'a')
-             .replace(/[éêèë]/, 'e')
-             .replace(/[íîìï]/, 'i')
-             .replace(/[óôòõö]/, 'o')
-             .replace(/[úûùü]/, 'u')
-             .replace(/[ýÿ]/, 'y')
-             .replace(/ç/, 'c')
-             .replace(/ñ/, 'n')
+             .replace(/[Ã¡Ã¢Ã Ã£Ã¤]/, 'a')
+             .replace(/[Ã©ÃªÃ¨Ã«]/, 'e')
+             .replace(/[Ã­Ã®Ã¬Ã¯]/, 'i')
+             .replace(/[Ã³Ã´Ã²ÃµÃ¶]/, 'o')
+             .replace(/[ÃºÃ»Ã¹Ã¼]/, 'u')
+             .replace(/[Ã½Ã¿]/, 'y')
+             .replace(/Ã§/, 'c')
+             .replace(/Ã±/, 'n')
              .replace(/^[^a-zA-Z0-9]+/, '')
              .replace(/[^a-zA-Z0-9]+$/, '');
 }
