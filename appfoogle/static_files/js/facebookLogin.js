@@ -1,5 +1,3 @@
-  
-var a;
 window.fbAsyncInit = function() {
   // init the FB JS SDK
   FB.init({ 
@@ -47,30 +45,21 @@ window.fbAsyncInit = function() {
 
 // Load the SDK asynchronously
 (function(d, s, id){
-   var js, fjs = d.getElementsByTagName(s)[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement(s); js.id = id;
-   js.src = "//connect.facebook.net/en_US/all.js";
-   fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));
-
- function testAPI() {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+ 
+function testAPI() {
   console.log('Welcome!  Fetching your information.... ');
-  /*FB.api('/me', function(response) {
-    console.log('Good to see you, ' + response.name + '.');
-  });*/
   FB.api(
   {
     method: 'fql.query',
-    query: 'SELECT body FROM message WHERE thread_id=388551281214203 ORDER BY created_time DESC LIMIT 100 OFFSET 139000'/*IN (SELECT thread_id FROM thread WHERE folder_id=1 LIMIT 1000) ORDER BY created_time DESC LIMIT 2000 OFFSET 1000'*/
+    query: 'SELECT body FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
   },
   function(response) {
-    console.log(response);
-    a=response;
-    console.log('Your name is ' + response[0].body);
-    console.log("Contagem = "  + response.length);
-
-  }
-);
-
+    createDiccionary(response);
+  });
 } 
