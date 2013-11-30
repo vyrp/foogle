@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 import webapp2
+import json
 from google.appengine.ext import ndb
-
 
 
 class Comments(ndb.Model):
@@ -39,15 +39,88 @@ class Messages(ndb.Model):
 
 
 class GetFromCommentsHandler(webapp2.RequestHandler):
-	def get(self):
-		word=str(self.request.get('word'));
-		uid=str(self.request.get('uid'));
-		ocurrences = Comments.query(ndb.AND(Comments.uid==int(uid),Comments.word==word)) #ndb.gql("SELECT fbid FROM Comments WHERE uid=" + uid + " AND word=\'" + word + "\'" );
-		response="";
-		for ocurrence in ocurrences:
-			response+=(str(ocurrence.fbid) + ",");
-		self.response.write(response[0:-1]	);
+
+	def post(self):
+		try:
+			body=json.loads(self.request.body)
+		except:
+			self.error(400)
+			self.response.write('400 invalid json in request body')
+			return
+
+		offset=None
+		if 'offset' in body:
+			offset=body['offset']
+			if not isinstance(offset,int):
+				offset=None
+		if not offset:
+			offset=0
+
+		limit=None
+		if 'limit' in body:
+			limit=body['limit']
+			if not isinstance(limit,int):
+				limit=None
+		if not limit:
+			limit=20
+
+		if 'word' in body:
+			word=body['word']
+		else:
+			self.error(400)
+			self.response.write('400 invalid word')
+			return 
+
+		if 'uid' in body:
+			uid=body['uid']
+			if not isinstance(uid,int):
+				self.error(400)
+				self.response.write('400 non integer id')
+				return
+		else:
+			self.error(400)
+			self.response.write('400 invalid uid')
+			return
+
+		try:
+			gqlOcurrences = Comments.query(ndb.AND(Comments.uid==int(uid),Comments.word==word))
+			ocurrences=gqlOcurrences.fetch(offset=offset,limit=limit)
+		except:
+			self.error(500)
+			self.response.write('500 error querying database')
+			return
+
+		fbids=[0]*len(ocurrences);
+		for i,ocurrence in enumerate(ocurrences):
+			fbids[i]=(ocurrence.fbid);
 		
+		response={'data':fbids}
+		self.response.write(json.dumps(response));
+		
+
+class PutCommentHandler(webapp2.RequestHandler):
+	def post(self):
+		try:
+			body=json.loads(self.request.body)
+		except:
+			self.error(400)
+			self.response.write('400 invalid json in request body')
+			return
+
+		if 'words' in body:
+			words=body['words']
+			if not isinstance(words,list):
+				self.error(400)
+				self.response.write('400 words is not an array')
+				return
+		else:
+			self.error(400)
+			self.response.write('400 invalid words')
+			return 
+
+
+		response={'status':'success'}
+		self.response.write(json.dumps(response));
 
 class DummyPutCommentHandler(webapp2.RequestHandler):
 	def get(self):
@@ -60,8 +133,7 @@ class DummyPutCommentHandler(webapp2.RequestHandler):
 
 
 
-
 app = webapp2.WSGIApplication([
-    ('/putcomment', DummyPutCommentHandler),
+    ('/putcomment', PutCommentHandler),
     ('/comments', GetFromCommentsHandler)    
 ], debug=True)
