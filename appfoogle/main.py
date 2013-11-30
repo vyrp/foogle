@@ -15,34 +15,34 @@
 # limitations under the License.
 #
 import webapp2
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
 
 
-class Comments(db.Model):
-	uid = db.IntegerProperty();
-	fbid = db.IntegerProperty();
-	word = db.StringProperty();
+class Comments(ndb.Model):
+	uid = ndb.IntegerProperty();
+	fbid = ndb.IntegerProperty();
+	word = ndb.StringProperty();
 	
 
-class Posts(db.Model):
-	uid = db.IntegerProperty();
-	fbidms = db.IntegerProperty();
-	fbidls = db.IntegerProperty();
-	word = db.StringProperty();
+class Posts(ndb.Model):
+	uid = ndb.IntegerProperty();
+	fbidh = ndb.IntegerProperty();
+	fbidl = ndb.IntegerProperty();
+	word = ndb.StringProperty();
 	
 
-class Messages(db.Model):
-	uid = db.IntegerProperty();
-	fbid = db.IntegerProperty();
-	word = db.StringProperty();
+class Messages(ndb.Model):
+	uid = ndb.IntegerProperty();
+	fbid = ndb.IntegerProperty();
+	word = ndb.StringProperty();
 
 
 class GetFromCommentsHandler(webapp2.RequestHandler):
 	def get(self):
 		word=str(self.request.get('word'));
 		uid=str(self.request.get('uid'));
-		ocurrences = db.GqlQuery("SELECT fbid FROM Comments WHERE uid=" + uid + " AND word=\'" + word + "\'" );
+		ocurrences = Comments.query(ndb.AND(Comments.uid==int(uid),Comments.word==word)) #ndb.gql("SELECT fbid FROM Comments WHERE uid=" + uid + " AND word=\'" + word + "\'" );
 		response="";
 		for ocurrence in ocurrences:
 			response+=(str(ocurrence.fbid) + ",");
@@ -58,13 +58,10 @@ class DummyPutCommentHandler(webapp2.RequestHandler):
 		comment.put();
 		self.response.write("Success");
 
-class MainHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.write('Hello world!')
+
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
     ('/putcomment', DummyPutCommentHandler),
     ('/comments', GetFromCommentsHandler)    
 ], debug=True)

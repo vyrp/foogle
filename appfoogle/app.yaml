@@ -20,6 +20,10 @@ handlers:
   static_files: static_files/channel.html
   upload: static_files/channel.html
 
+- url: /
+  static_files: static_files/index.html
+  upload: static_files/index.html
+
 - url: .*
   script: main.app
 
