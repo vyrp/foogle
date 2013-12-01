@@ -153,7 +153,8 @@ def FQL(query, access_token):
     return response_json
 
 
-class SearchHandler(webapp2.RequestHandler):
+
+class JsonRequestHandler(webapp2.RequestHandler):
     def parseJson(self):
         try:
             body = json.loads(self.request.body)
@@ -162,6 +163,11 @@ class SearchHandler(webapp2.RequestHandler):
             self.response.write('400 invalid json in request body')
             return None
         return body
+
+
+
+class SearchHandler(JsonRequestHandler):
+    
 
     def getSearchParameters(self, body):
         offset = None
