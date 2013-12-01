@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
   </head>
   <body>
-    <div class="navbar navbar-default" role="navigation">
+    <div class="navbar navbar-inv" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,12 +27,14 @@
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </div><!-- /.navbar -->
-    <div id="front-main">
+
+    <div id="front-main" ng-app="">
       <img src="images/FoogleMain.png" id="main-logo" alt="foogle"/>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <div class="input-group" id="main-input">
-            <input type="text" class="form-control" placeholder="Search for anything on your facebook">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input type="text" class="form-control" ng-model="data.query" placeholder="Search for anything on your facebook" />
             <span class="input-group-btn">
               <button class="btn btn-default" type="button">Search</button>
            </span>
@@ -40,13 +42,14 @@
         </div>
       </div>
     </div>
+
     <div id="fb-root"></div>
     <fb:login-button show-faces="true" width="200" max-rows="1" perms="read_mailbox"></fb:login-button>
     
-    <script src="//connect.facebook.net/en_US/all.js"></script>
-    <script src="js/dictionary.js"></script>
+    <!--<script src="//connect.facebook.net/en_US/all.js"></script>-->
+    <script src="js/angular.min.js"></script>
     <script src="js/facebookLogin.js"></script>
-    <!--<script src="https://code.jquery.com/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
     </script>
