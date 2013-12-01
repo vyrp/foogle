@@ -1,5 +1,5 @@
 application: appfoogle
-version: 2
+version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -19,7 +19,7 @@ handlers:
 - url: /requests.html
   static_files: static_files/requests.html
   upload: static_files/requests.html
-  
+
 - url: /channel.html
   static_files: static_files/channel.html
   upload: static_files/channel.html
