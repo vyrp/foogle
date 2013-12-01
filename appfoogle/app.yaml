@@ -1,5 +1,5 @@
 application: appfoogle
-version: 1
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -20,6 +20,9 @@ handlers:
   static_files: static_files/channel.html
   upload: static_files/channel.html
 
+- url: /requests/.*
+  script: requests.app
+  
 - url: /
   static_files: static_files/index.html
   upload: static_files/index.html
@@ -30,3 +33,5 @@ handlers:
 libraries:
 - name: webapp2
   version: "2.5.2"
+- name: jinja2
+  version: "2.6"

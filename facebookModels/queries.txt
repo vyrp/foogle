@@ -1,5 +1,5 @@
 SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC
-SELECT post_id,message FROM stream WHERE source_id=me() LIMIT 1000 //bizu q o limite pode ser arbitrariamente grande
+SELECT post_id,message FROM stream WHERE source_id=me() LIMIT 1000 --bizu q o limite pode ser arbitrariamente grande
 SELECT post_id,message FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me())
 SELECT text FROM comment WHERE post_id IN (SELECT post_id FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me()))
 SELECT post_id, message FROM stream WHERE filter_key IN(SELECT filter_key FROM stream_filter WHERE type = 'newsfeed' AND uid=me()) AND is_hidden=0
