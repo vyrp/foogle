@@ -5,12 +5,111 @@ import re
 import urllib
 import urllib2
 import webapp2
-
 from models import *
 
-commonWords = re.compile(ur"^(por|pel[oa]s?|ao?s?|d[aeo]s?|duma?s?|em|nas?|entre|com|sem|os?|ou|se|que|for|at|the|and|or|in|that|by)$")
-
-
+commonWords=re.compile(ur"^(por|pel[oa]s?|ao?s?|d[aeo]s?|duma?s?|em|nas?|entre|com|sem|os?|ou|se|que|for|at|the|and|or|in|that|by)$")
+equivalents={
+'voce':'vc',
+'porque':'pq',
+'abraco':'abc',
+'beijo':'bj',
+'beijos':'bj',
+'bjos':'bj',
+'beijao':'bj',
+'bjao':'bj',
+'comigo':'cmg',
+'contigo':'ctg',
+'quando':'qdo',
+'qndo':'qdo',
+'favor':'pf',
+'muito':'mt',
+'mto':'mt',
+'tambem':'tb',
+'tbm':'tb',
+'estao':'tao',
+'esta':'ta',
+'estou':'to',
+'como':'cm',
+'qualquer':'qlquer',
+'gente':'gt',
+'gte':'gt',
+'gnte':'gt',
+'depois':'dpois',
+'obrigado':'brigado',
+'obrigada':'brigada',
+'hoje':'hj',
+'beleza':'blz',
+'cara':'kra',
+'valeu':'vlw',
+'falou':'flw',
+'adicionar':'add',
+'certeza':'ctz',
+'cerveja':'crvja',
+'dica':'dik',
+'cade':'kd',
+'kde':'kd',
+'abracos':'abs',
+'tchau':'xau',
+'mensagem':'msg',
+'mesmo':'msm',
+'apartamento':'apt',
+'apto':'apt',
+'agora':'agr',
+'aqui':'aki',
+'aquilo':'akilo',
+'aquele':'akele',
+'aquela':'akela',
+'alguem':'algm',
+'acho':'axo',
+'casa':'ksa',
+'depois':'dpois',
+'enquanto':'enqto',
+'entaum':'entao',
+'naum':'n',
+'nao':'n',
+'fica':'fik',
+'horas':'hr',
+'hora':'hr',
+'hrs':'hr',
+'jah':'ja',
+'cabeca':'kbca',
+'imagina':'magina',
+'amigo':'migo',
+'amiga':'miga',
+'migs':'miga',
+'moleque':'mlq',
+'mlk':'mlq',
+'nada':'nd',
+'ninguem':'ng',
+'ngm':'ng',
+'aniversario':'niver',
+'numero':'nr',
+'num':'nr',
+'nunca':'nunk',
+'para':'pra',
+'espera':'pera',
+'qualquer':'qlqr',
+'qlquer':'qlqr',
+'quero':'qro',
+'quase':'qse',
+'quantidade':'qtd',
+'qtde':'qtd',
+'quanto':'qto',
+'verdade':'vdd',
+'valeu':'vlw',
+'vezes':'vzs',
+'vou':'vo',
+'com':'c',
+'sim':'s',
+'que':'q',
+'macho':'mah',
+'vixe':'vish',
+'depois':'dpois',
+'qual':'ql',
+'notebook':'note',
+'facebook':'fb',
+'te':'t'
+};
 def normalize(word):
     word = word.lower()
     word = re.sub(ur'[áâàãä]',r'a',word)
@@ -27,6 +126,8 @@ def normalize(word):
     return word
 
 def simplify(word):
+    if word in equivalents:
+        return equivalents[word]
     return word
 
 def isCommon(word):
@@ -35,7 +136,7 @@ def isCommon(word):
     return False
 
 def preprocess(word):
-    word = normalize(word)
+    word=normalize(word)
     if isCommon(word):
         return ""
     return simplify(word)
