@@ -60,6 +60,6 @@ function testAPI() {
     query: 'SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
   },
   function(response) {
-    createDiccionary(response);
+    // createDiccionary(response);
   });
 } 

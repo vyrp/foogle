@@ -3,10 +3,10 @@
   <head>
     <title>Foogle App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="static_files/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
   </head>
-  <body>
+  <body ng-app="foogleApp" ng-controller="mainCtrl">
     <div class="navbar navbar-inv" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -24,12 +24,15 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id="button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox"></fb:login-button></li>
+          </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </div><!-- /.navbar -->
 
-    <div id="front-main" ng-app="">
-      <img src="images/FoogleMain.png" id="main-logo" alt="foogle"/>
+    <div id="front-main">
+      <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <div class="input-group" id="main-input">
@@ -41,16 +44,17 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div id="fb-root"></div>
-    <fb:login-button show-faces="true" width="200" max-rows="1" perms="read_mailbox"></fb:login-button>
-    
-    <!--<script src="//connect.facebook.net/en_US/all.js"></script>-->
-    <script src="js/angular.min.js"></script>
-    <script src="js/facebookLogin.js"></script>
+
+    <script src="static_files/js/angular.min.js"></script>
+    <script src="static_files/js/angularities.js"></script>
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="static_files/js/bootstrap.min.js"></script>
+    <script src="//connect.facebook.net/en_US/all.js"></script>
+    <script src="static_files/js/facebookLogin.js"></script>
     <script>
     </script>
 

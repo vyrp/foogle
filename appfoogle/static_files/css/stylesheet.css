@@ -1,8 +1,12 @@
-body {background-color:#3B5998;}
+body {background-color:#3F6AB5;}
 
 .navbar-inv {
   background-color: #FFF; /* background color will be black for all browsers */
   border-color:#FFF
+}
+
+#button-li {
+	margin-top:14px;
 }
 
 #front-main {
