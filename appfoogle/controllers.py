@@ -334,8 +334,9 @@ class MultiSearchHandler(SearchHandler):
 
         return fbids
 
-    def multi_search(self, cls):
-        body = self.parseJson()
+    def multi_search(self, cls,body=None):
+        if body==None:
+            body = self.parseJson()
         if body == None:
             return
         sentence = self.getSentence(body)
@@ -356,46 +357,33 @@ class MultiSearchHandler(SearchHandler):
         return response
 
 
-class GetFromCommentsHandler(MultiSearchHandler):
-    def post(self):
-        response = self.multi_search(Comments)
-        if response == None:
-            return
-        self.response.write(json.dumps(response))
-
-
-class GetFromMessagesHandler(MultiSearchHandler):        
-    def post(self):
-        response = self.multi_search(Messages)
-        if response == None:
-            return
-        self.response.write(json.dumps(response))
-
-
-class GetFromPostsHandler(MultiSearchHandler):
-    def post(self):
-        response = self.multi_search(Posts)
-        if response == None:
-            return
-        self.response.write(json.dumps(response))
 
 
 class GetFromAllHandler(MultiSearchHandler):
     def post(self):
-        results = []
-        result = self.multi_search(Posts)
-        if result:
-            results.append(result)
-
-        result = self.multi_search(Messages)
-        if result:
-            results.append(result)
-
-        result = self.multi_search(Comments)
-        if result:
-            results.append(result)
-        if len(results) == 0:
+        body=self.parseJson();
+        if body==None:
             return
+        results = []
+        filt='cmp'
+        if 'filter' in body:
+            filt=body['filter']
+        
+        if 'p' in filt:
+            result = self.multi_search(Posts)
+            if result:
+                results.append(result)
+
+        if 'm' in filt:
+            result = self.multi_search(Messages)
+            if result:
+                results.append(result)
+
+        if 'c' in filt:
+            result = self.multi_search(Comments)
+            if result:
+                results.append(result)
+        
         fbids = self.mergeResults(results)
         response = {'data': fbids}    
         self.response.write(json.dumps(response))
