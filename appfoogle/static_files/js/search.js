@@ -5,9 +5,6 @@ function queryMessage(message_id,timestamp,delta,callback){
 	uplimit=(timestamp+delta);
 	lowlimit=(timestamp-delta);
 	query='SELECT body,message_id,author_id FROM message WHERE thread_id IN \(SELECT thread_id FROM message WHERE message_id="' + message_id + '"\)  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
-	 
-	
-	 
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -27,8 +24,7 @@ function queryMessage(message_id,timestamp,delta,callback){
 
 
 function queryPost(post_id,callback){
-	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';
-	 
+	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';	 
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -40,45 +36,4 @@ function queryPost(post_id,callback){
 }
 
 
-
-
-
-
-function searchBar($scope){
-	$scope.search=function(){
-		$.post(
-	      "/search",
-	      JSON.stringify({
-			"uid":1,
-			"sentence":$scope.data.query,
-			"filter":"cmp"
-		   }),
-	      function(response) {
-	      	data=JSON.parse(response).data;
-	      	/// 
-	      	for(i in data){
-	      		data[i].type='p';
-	      		switch(data[i].type){
-	      			case 'm':
-		      			message_id="388551281214203_133771";//data.fbid
-		      			timestamp="1378684085";//data.timestamp
-		      			delta=300;
-		      			queryMessage(message_id,timestamp,delta,function(response){
-		      				 
-		      			});
-	      			break;
-	      			case 'p':
-	      				post_id="100001603548199_589109644485815";//data.fbid
-		      			timestamp="1378670958";//data.timestamp
-		      			queryPost(post_id,function(response){
-		      				 
-		      			});
-	      			break;
-	      			case 'c':
-	      			break;
-	      		}
-	      	}
-	      });
-	}
-}	
 
