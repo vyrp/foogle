@@ -13,7 +13,7 @@
         <p><img src="http://graph.facebook.com/{{ current_user.id }}/picture?type=square"/></p>
         <p>
           Foogle<br>
-          Search: [    ]<br>
+          Search: [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
           response: {{ response }}
         </p>
       {% else %}
@@ -31,7 +31,17 @@
           
           //channelUrl : '//appfoogle.appspot.com/channel.html', // Channel file for x-domain comms
         });
-        FB.Event.subscribe('{% if current_user %}auth.logout{% else %}auth.login{% endif %}', function(response) {
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+          if (response.status === 'connected') {
+            
+          } else if(response.status === 'not_authorized') {
+            
+            FB.login();
+          } else {
+            
+            FB.login();
+          }
+        
           {% if current_user %} window.location = "/requests/logout" {% else %} window.location.reload(); {% endif %}
         });
       };

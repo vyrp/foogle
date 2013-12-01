@@ -35,8 +35,8 @@ class User(db.Model):
 class BaseHandler(webapp2.RequestHandler):
     @property
     def current_user(self):
-        #if self.session.get("user"):
-        #    return self.session.get("user")
+        if self.session.get("user"):
+            return self.session.get("user")
         
         cookie = facebook.get_user_from_cookie(self.request.cookies, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET)
         if cookie:
