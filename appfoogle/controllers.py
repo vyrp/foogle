@@ -297,7 +297,10 @@ class MultiSearchHandler(SearchHandler):
             return None
         if not 'timestamp' in el:
             return None
-        return el['fbid'] + "!" + str(el['fbid'])
+        if not 'type' in el:
+            el['type']='u'
+
+        return el['fbid'] + "!" + str(el['fbid']) + "!" + el['type']
 
     def getRate(self, el):
         if not 'rate' in el:
@@ -306,14 +309,21 @@ class MultiSearchHandler(SearchHandler):
 
     def getObjectFromHash(self, key):
         keys = key.split('!')
-        if len(keys) >= 2:
+
+        if len(keys) >= 3:
             fbid = keys[0]
-            timestamp = keys[0]
+            timestamp = keys[1]
+            t=keys[2]
+        elif len(keys)>=2:
+            fbid = keys[0]
+            timestamp = keys[1]
+            t='u'
         else:
             fbid = keys
             timestamp = 0
+            t='u'
 
-        return {'fbid': fbid, 'timestamp': timestamp}
+        return {'fbid': fbid, 'timestamp': int(timestamp),'type':t}
 
     def mergeResults(self, results):
         allOcurrences = {}
@@ -366,6 +376,12 @@ class MultiSearchHandler(SearchHandler):
 
 
 class GetFromAllHandler(MultiSearchHandler):
+
+    def setType(self,result,t):
+        if 'data' in result:
+            for fbid in result['data']:
+                fbid['type']=t;
+
     def post(self):
         body=self.parseJson();
         if body==None:
@@ -378,16 +394,19 @@ class GetFromAllHandler(MultiSearchHandler):
         if 'p' in filt:
             result = self.multi_search(Posts)
             if result:
+                self.setType(result,'p')
                 results.append(result)
 
         if 'm' in filt:
             result = self.multi_search(Messages)
             if result:
+                self.setType(result,'m')
                 results.append(result)
 
         if 'c' in filt:
             result = self.multi_search(Comments)
             if result:
+                self.setType(result,'c')
                 results.append(result)
         
         fbids = self.mergeResults(results)
