@@ -8,41 +8,34 @@
     <div id="container" style="margin: auto; width: 800px; text-align: center;">
       <fb:login-button autologoutlink="true"></fb:login-button>
       <div id="fb-root"></div>
-
-      {% if current_user %}
-        <p><img src="http://graph.facebook.com/{{ current_user.id }}/picture?type=square"/></p>
-        <p>
-          Foogle<br>
-          Search: [&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br>
-          response: {{ response }}
-        </p>
-      {% else %}
-        <p>Enter FOOGLE!</p>
-      {% endif %}
+      
+      <h1>FOOGLE</h1>
     </div>
 
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
       window.fbAsyncInit = function() {
         FB.init({
-          appId: '{{ facebook_app_id }}',
+          //appId: '394904207304456',    //Server
+          appId: '336910786453085',    //Local
           status: true,
-          cookie: true,
           xfbml: true,
-          
-          //channelUrl : '//appfoogle.appspot.com/channel.html', // Channel file for x-domain comms
         });
         FB.Event.subscribe('auth.authResponseChange', function(response) {
           if (response.status === 'connected') {
-            
+            var authResponse = FB.getAuthResponse();
+            $.post('populate', {'access_token': authResponse.accessToken}, function(response){
+              if (response.status === 'success') {
+                console.log('success');
+              } else {
+                console.log('error');
+              }
+            }, "json");
           } else if(response.status === 'not_authorized') {
-            
-            FB.login();
+            console.log('not_authorized');
           } else {
-            
-            FB.login();
+            console.log('not connected');
           }
-        
-          {% if current_user %} window.location = "/requests/logout" {% else %} window.location.reload(); {% endif %}
         });
       };
       (function() {

@@ -16,11 +16,15 @@ handlers:
   static_files: static_files/index.html
   upload: static_files/index.html
 
+- url: /requests.html
+  static_files: static_files/requests.html
+  upload: static_files/requests.html
+  
 - url: /channel.html
   static_files: static_files/channel.html
   upload: static_files/channel.html
 
-- url: /requests/.*
+- url: /populate
   script: requests.app
   
 - url: /

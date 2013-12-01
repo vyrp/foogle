@@ -1,101 +1,59 @@
-FACEBOOK_APP_ID = "394904207304456"
-FACEBOOK_APP_SECRET = "e1651b27b530f8d441f92eca6407c147"
-
-import facebook
-import jinja2
-import os
+import json
+import urllib
 import urllib2
 import webapp2
 
-from google.appengine.ext import db
-from webapp2_extras import sessions
+from google.appengine.ext import ndb
 
 
-class User(db.Model):
-    id = db.StringProperty(required=True)
-    created = db.DateTimeProperty(auto_now_add=True)
-    updated = db.DateTimeProperty(auto_now=True)
-    access_token = db.StringProperty(required=True)
+def FQL(query, access_token):
+    params = {
+        'q': query,
+        'access_token': access_token
+    }
+    
+    response = urllib2.urlopen('https://graph.facebook.com/fql?' + urllib.urlencode(params))
+    response_json = json.loads(response.read())
+    response.close()
+    return response_json
+
+
+class User(ndb.Model):
+    uid = ndb.StringProperty(required=True)
+    access_token = ndb.StringProperty()
     
     @classmethod
-    def find_or_create(cls, key_name, access_token):
-        user = cls.get_by_key_name(key_name)
-        
+    def find_or_create(cls, uid):
+        user = cls.query(cls.uid == uid).get()
         if not user:
-            profile = facebook.GraphAPI(access_token).get_object("me")
-            user = User(key_name=str(profile["id"]), id=str(profile["id"]), access_token=access_token)
-            user.put()
-        elif user.access_token != access_token:
-            user.access_token = access_token
-            user.put()
-            
+            user = User(uid=uid)
         return user
 
 
-class BaseHandler(webapp2.RequestHandler):
-    @property
-    def current_user(self):
-        if self.session.get("user"):
-            return self.session.get("user")
+class PopulateHandler(webapp2.RequestHandler):
+    def post(self):
+        status = 'success'
         
-        cookie = facebook.get_user_from_cookie(self.request.cookies, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET)
-        if cookie:
-            user = User.find_or_create(cookie["uid"], cookie["access_token"])
-            self.session["user"] = {
-                'id': user.id,
-                'access_token': user.access_token
-            }
-            return self.session["user"]
-            
-        return None
-
-    def dispatch(self):
-        self.session_store = sessions.get_store(request=self.request)
         try:
-            webapp2.RequestHandler.dispatch(self)
-        finally:
-            self.session_store.save_sessions(self.response)
-
-    @webapp2.cached_property
-    def session(self):
-        return self.session_store.get_session()
+            access_token = self.request.get('access_token')
+            response = FQL('SELECT uid FROM user WHERE uid=me()', access_token)
+            
+            if 'data' in response:
+                uid = response['data'][0]['uid']
+                user = User.find_or_create(str(uid))
+                user.access_token = access_token
+                user.put()
+            elif 'error' in response:
+                status = 'error'
+            
+        except:
+            status = 'error'
         
-    def render(self, template, values):
-        self.response.write(jinja_environment.get_template(template).render(values))
+        self.response.write(json.dumps({
+            'status': status
+        }))
 
 
-class HomeHandler(BaseHandler):
-    def get(self):
-        user = self.current_user
-        response = 'X'
-        if user:
-            graph = facebook.GraphAPI(self.current_user['access_token'])
-            response = graph.fql('SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC')
-        
-        values = {
-            'facebook_app_id': FACEBOOK_APP_ID,
-            'current_user': user,
-            'response': response
-        }
-        self.render('templates/requests.html', values)
-
-
-class LogoutHandler(BaseHandler):
-    def get(self):
-        if self.current_user is not None:
-            self.session['user'] = None
-
-        self.redirect('/requests/login')
-
-jinja_environment = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__))
-)
-
-app = webapp2.WSGIApplication(
-    [
-        ('/requests/login', HomeHandler),
-        ('/requests/logout', LogoutHandler)
-    ],
-    config={'webapp2_extras.sessions': {'secret_key': 'poweokNsd98134knsadk&83'}},
-    debug=True
-)
+app = webapp2.WSGIApplication([
+    ('/populate', PopulateHandler)
+], debug=True)
