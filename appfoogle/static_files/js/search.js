@@ -1,0 +1,84 @@
+function queryMessage(message_id,timestamp,delta,callback){
+	timestamp=parseInt(timestamp);
+	delta=parseInt(delta);
+	if(delta==0)return;
+	uplimit=(timestamp+delta);
+	lowlimit=(timestamp-delta);
+	query='SELECT body,message_id,author_id FROM message WHERE thread_id IN \(SELECT thread_id FROM message WHERE message_id="' + message_id + '"\)  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
+	 
+	
+	 
+	FB.api(
+	  {
+	    method: 'fql.query',
+	    query: query
+	  },
+	  function(response) {
+	  	 
+	  	if(JSON.stringify(response).indexOf(message_id)!=-1){
+	  		callback(response);
+	  	}
+	  	else{
+	  		queryMessage(message_id,timestamp,Math.floor(delta/2),callback);
+	  	}
+	  });
+}
+
+
+
+function queryPost(post_id,callback){
+	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';
+	 
+	FB.api(
+	  {
+	    method: 'fql.query',
+	    query: query
+	  },
+	  function(response) {
+	  	callback(response);
+	  });
+}
+
+
+
+
+
+
+function searchBar($scope){
+	$scope.search=function(){
+		$.post(
+	      "/search",
+	      JSON.stringify({
+			"uid":1,
+			"sentence":$scope.data.query,
+			"filter":"cmp"
+		   }),
+	      function(response) {
+	      	data=JSON.parse(response).data;
+	      	/// 
+	      	for(i in data){
+	      		data[i].type='p';
+	      		switch(data[i].type){
+	      			case 'm':
+		      			message_id="388551281214203_133771";//data.fbid
+		      			timestamp="1378684085";//data.timestamp
+		      			delta=300;
+		      			queryMessage(message_id,timestamp,delta,function(response){
+		      				 
+		      			});
+	      			break;
+	      			case 'p':
+	      				post_id="100001603548199_589109644485815";//data.fbid
+		      			timestamp="1378670958";//data.timestamp
+		      			queryPost(post_id,function(response){
+		      				 
+		      			});
+	      			break;
+	      			case 'c':
+	      			break;
+	      		}
+	      	}
+	      });
+	}
+}	
+

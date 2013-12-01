@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html ng-app>
   <head>
     <title>Foogle App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +25,7 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li id="button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox"></fb:login-button></li>
+            <li id="button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream"></fb:login-button></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
@@ -35,22 +35,24 @@
       <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
-          <div class="input-group" id="main-input">
+          <div class="input-group" id="main-input" ng-controller="searchBar">
             <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-            <input type="text" class="form-control" ng-model="data.query" placeholder="Search for anything on your facebook" />
+            <form ng-submit="search()">
+              <input type="text" class="form-control" ng-model="data.query"  placeholder="Search for anything on your facebook"  />
+            </form>
             <span class="input-group-btn">
-              <button class="btn btn-default" type="button">Search</button>
+            <button class="btn btn-default" type="button" ng-click="search()">Search</button>
            </span>
           </div>
         </div>
       </div>
-
     </div>
 
     <div id="fb-root"></div>
 
     <script src="static_files/js/angular.min.js"></script>
     <script src="static_files/js/angularities.js"></script>
+    <script src="static_files/js/search.js"></script>
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="static_files/js/bootstrap.min.js"></script>
     <script src="//connect.facebook.net/en_US/all.js"></script>
