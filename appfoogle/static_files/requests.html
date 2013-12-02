@@ -16,8 +16,8 @@
     <script>
       window.fbAsyncInit = function() {
         FB.init({
-          //appId: '394904207304456',    //Server
-          appId: '336910786453085',    //Local
+          appId: '394904207304456',    //Server
+          //appId: '336910786453085',    //Local
           status: true,
           xfbml: true,
         });
@@ -25,11 +25,7 @@
           if (response.status === 'connected') {
             var authResponse = FB.getAuthResponse();
             $.post('populate', {'access_token': authResponse.accessToken}, function(response){
-              if (response.status === 'success') {
-                console.log('success');
-              } else {
-                console.log('error');
-              }
+              console.log(response.status);
             }, "json");
           } else if(response.status === 'not_authorized') {
             console.log('not_authorized');
