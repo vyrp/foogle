@@ -1,7 +1,21 @@
 var foogleApp = angular.module('foogleApp', []);
+foogleApp.factory('Data', function(){
+	return {dropped: false, query: ""};
+})
 
-function searchBar($scope){
+function frontendCtrl($scope, Data){
+	$scope.data = Data;
+
+	$scope.invertDropdown= function(){
+
+	}
+}
+
+function searchBar($scope, Data){
+	$scope.data = Data;
+
 	$scope.search=function(){
+		alert($scope.data.query)
 		$.post(
 	      "/search",
 	      JSON.stringify({
