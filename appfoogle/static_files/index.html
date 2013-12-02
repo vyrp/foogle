@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
-<html ng-app>
+<html>
   <head>
     <title>Foogle App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="static_files/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
   </head>
-  <body ng-app="foogleApp" ng-controller="mainCtrl">
+  <body ng-app="foogleApp">
     <div class="navbar navbar-inv" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -25,7 +25,7 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li id="button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream user_likes"></fb:login-button></li>
+            <li id="fb-button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream user_likes"></fb:login-button></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->

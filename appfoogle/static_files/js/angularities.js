@@ -1,10 +1,5 @@
 var foogleApp = angular.module('foogleApp', []);
 
-function mainCtrl($scope){
-	
-}
-
-
 function searchBar($scope){
 	$scope.search=function(){
 		$.post(
