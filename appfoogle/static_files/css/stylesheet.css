@@ -1,22 +1,23 @@
 body {background-color:#3F6AB5;}
 
 .navbar-inv {
-  background-color: #FFF; /* background color will be black for all browsers */
+  background-color: #FFF; /* background color will be white for all browsers */
   border-color:#FFF
 }
 
-#button-li {
+#fb-button-li {
 	margin-top:14px;
 }
 
 #front-main {
 	position:fixed;
-	top: 40%;
+	top: 20%;
 }
 
 #main-logo { /*image dimensions: 488px x 108px;*/
-	margin-top: -104px;
-	margin-left: -244px;
-	padding-left: 50%;
-	padding-bottom: 15px;
+	margin-top: 60px;
+	margin-left: 30%;
+	margin-right: 30%;
+	padding-bottom: 10px;
+	width: 40%;
 }
