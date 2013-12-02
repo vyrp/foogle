@@ -105,7 +105,8 @@ _equivalents = {
     'notebook': 'note',
     'facebook': 'fb',
     'te': 't'
-};
+}
+
 
 def _normalize(word):
     word = word.lower()
@@ -122,13 +123,16 @@ def _normalize(word):
     # word = re.sub(ur'[^a-zA-Z0-9]', r'', word)
     return word
 
+
 def _simplify(word):
     if word in _equivalents:
         return _equivalents[word]
     return word
 
+
 def _isCommon(word):
     return bool(_commonWords.match(word))
+
 
 def preprocess(word):
     word = _normalize(word)
