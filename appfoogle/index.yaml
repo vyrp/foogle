@@ -15,3 +15,21 @@ indexes:
   - name: uid
   - name: word
   - name: fbid
+
+- kind: Comments
+  properties:
+  - name: uid
+  - name: word
+  - name: timestamp
+
+- kind: Messages
+  properties:
+  - name: uid
+  - name: word
+  - name: timestamp
+
+- kind: Posts
+  properties:
+  - name: uid
+  - name: word
+  - name: timestamp
