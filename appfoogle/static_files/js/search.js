@@ -35,5 +35,17 @@ function queryPost(post_id,callback){
 	  });
 }
 
+function queryComment(comment_id,callback){
+	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + comment_id + '"';	 
+	FB.api(
+	  {
+	    method: 'fql.query',
+	    query: query
+	  },
+	  function(response) {
+	  	callback(response);
+	  });
+}
+
 
 

@@ -32,10 +32,15 @@ function searchBar($scope){
 	      				post_id="100001603548199_589109644485815";//data.fbid
 		      			timestamp="1378670958";//data.timestamp
 		      			queryPost(post_id,function(response){
-		      				 
+		      				 console.log(response);
 		      			});
 	      			break;
 	      			case 'c':
+	      				comment_id="100001603548199_589109644485815";//data.fbid
+		      			timestamp="1378670958";//data.timestamp
+		      			queryComment(comment_id,function(response){
+		      				 console.log(response);
+		      			});
 	      			break;
 	      		}
 	      	}
