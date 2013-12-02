@@ -36,12 +36,14 @@
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <div class="input-group" id="main-input" ng-controller="searchBar">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
+            </div>
             <form ng-submit="search()">
               <input type="text" class="form-control" ng-model="data.query"  placeholder="Search for anything on your facebook"  />
             </form>
             <span class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click="search()">Search</button>
+              <button class="btn btn-default" type="button" ng-click="search()">Search</button>
            </span>
           </div>
         </div>
