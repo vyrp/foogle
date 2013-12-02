@@ -1,8 +1,9 @@
+
 window.fbAsyncInit = function() {
   // init the FB JS SDK
   FB.init({ 
-    appId      : '394904207304456',                        // ID for Deploy
-    //appId       :  '336910786453085',                        // ID for local
+   // appId      : '394904207304456',                        // ID for Deploy
+    appId       :  '336910786453085',                        // ID for local
     channelUrl : '//appfoogle.appspot.com/channel.html', // Channel file for x-domain comms
     status     : true,                                 // Check Facebook Login status
     xfbml      : true                                  // Look for social plugins on the page
@@ -60,6 +61,6 @@ function testAPI() {
     query: 'SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC'
   },
   function(response) {
-    createDiccionary(response);
+    // createDiccionary(response);
   });
 } 

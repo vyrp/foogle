@@ -149,7 +149,7 @@ class MultiSearchHandler(SearchHandler):
         if not 'type' in el:
             el['type']='u'
 
-        return el['fbid'] + "!" + str(el['fbid']) + "!" + el['type']
+        return el['fbid'] + "!" + str(el['timestamp']) + "!" + el['type']
 
     def getRate(self, el):
         if not 'rate' in el:
@@ -171,8 +171,10 @@ class MultiSearchHandler(SearchHandler):
             fbid = keys
             timestamp = 0
             t='u'
-
-        return {'fbid': fbid, 'timestamp': int(timestamp),'type':t}
+        try:
+            return {'fbid': fbid, 'timestamp': int(timestamp),'type':t}
+        except:
+            return {'fbid': fbid, 'timestamp': 0,'type':t}
 
     def mergeResults(self, results):
         allOcurrences = {}
