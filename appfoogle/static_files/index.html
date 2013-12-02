@@ -1,67 +1,77 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <title>Foogle App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static_files/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
-  </head>
-  <body ng-app="foogleApp">
-    <div class="navbar navbar-inv" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Foogle</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li id="fb-button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream user_likes"></fb:login-button></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div><!-- /.container -->
-    </div><!-- /.navbar -->
+<head>
+  <title>Foogle App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="static_files/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
+</head>
+<body ng-app="foogleApp">
+  <div class="navbar navbar-inv" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Foogle</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li id="fb-button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream user_likes"></fb:login-button></li>
+        </ul>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+  </div><!-- /.navbar -->
 
-    <div id="front-main">
-      <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
-          <div class="input-group" id="main-input" ng-controller="searchBar">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
-            </div>
-            <form ng-submit="search()">
-              <input type="text" class="form-control" ng-model="data.query"  placeholder="Search for anything on your facebook"  />
-            </form>
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" ng-click="search()">Search</button>
-           </span>
-          </div>
- 
- <!--      <ul class="nav nav-pills">
-                <li class="active"><a href="#">Where</a></li>
-                 <li><a href="#">When</a></li>
-              </ul> -->
+  <div id="front-main">
+    <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
+    <div class="input-group quasi-center" ng-controller="searchBar">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
+      </div>
+      <form ng-submit="search()">
+        <input type="text" class="form-control" ng-model="data.query"  placeholder="Search for anything on your facebook"  />
+      </form>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="search()">Search</button>
+      </span>
     </div>
+    <div class="panel panel-default" id="pseudo-dropdown">
+      <div class="panel-body">
+        <ul class="nav nav-pills">
+          <li class="active"><a href="#where" data-toggle="pill">Where</a></li>
+          <li><a href="#when" data-toggle="pill">When</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade in active" id="where">
+            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+            </div>
+            <div class="tab-pane fade" id="when">
+              <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div id="fb-root"></div>
+        <div id="fb-root"></div>
 
-    <script src="static_files/js/angular.min.js"></script>
-    <script src="static_files/js/angularities.js"></script>
-    <script src="static_files/js/search.js"></script>
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="static_files/js/bootstrap.min.js"></script>
-    <script src="//connect.facebook.net/en_US/all.js"></script>
-    <script src="static_files/js/facebookLogin.js"></script>
-    <script>
-    </script>
+        <script src="static_files/js/angular.min.js"></script>
+        <script src="static_files/js/angularities.js"></script>
+        <script src="static_files/js/search.js"></script>
+        <script src="https://code.jquery.com/jquery.min.js"></script>
+        <script src="static_files/js/bootstrap.min.js"></script>
+        <script src="//connect.facebook.net/en_US/all.js"></script>
+        <script src="static_files/js/facebookLogin.js"></script>
+        <script>
+        </script>
 
-  </body>
-</html>
+      </body>
+      </html>
