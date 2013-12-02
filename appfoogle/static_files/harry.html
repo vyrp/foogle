@@ -14,6 +14,7 @@
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
+      var access_token;
       window.fbAsyncInit = function() {
         FB.init({
           //appId: '394904207304456',    //Server
@@ -22,8 +23,10 @@
           xfbml: true,
         });
         FB.Event.subscribe('auth.authResponseChange', function(response) {
+          console.log(Date(Date.now()));
           if (response.status === 'connected') {
             var authResponse = FB.getAuthResponse();
+            access_token=authResponse.accessToken;
             $.post('search', JSON.stringify({
                     "uid":"1",
                     "sentence":"por como as com em vai the a ",

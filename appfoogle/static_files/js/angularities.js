@@ -2,16 +2,22 @@ var foogleApp = angular.module('foogleApp', []);
 
 function searchBar($scope){
 	$scope.search=function(){
+		var authResponse = FB.getAuthResponse();
+        access_token=authResponse.accessToken;
+        if(access_token==undefined){
+			alert("Please, log in our app.");
+			return;
+		}
 		$.post(
 	      "/search",
 	      JSON.stringify({
-			"uid":1,
+			"access_token":access_token,
 			"sentence":$scope.data.query,
 			"filter":"cmp"
 		   }),
 	      function(response) {
 	      	data=JSON.parse(response).data;
-	      	/// 
+
 	      	for(i in data){
 	      		data[i].type='c';
 	      		switch(data[i].type){
