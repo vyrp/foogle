@@ -10,6 +10,8 @@ foogleApp.factory('Data', function(){
 	};
 })
 
+
+
 function searchBar($scope, Data){
 	$scope.data = Data;
 
@@ -29,7 +31,9 @@ function searchBar($scope, Data){
 		$scope.data.dropped = !current;
 	}
 
+
 	$scope.search=function(){
+		alert("Pesquisa: " + $scope.data.query);
 		$scope.data.dropped = false;
 		$.post(
 	      "/search",

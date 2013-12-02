@@ -40,10 +40,10 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-click="invertDropdown(data.dropped)"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
       </div>
       <form ng-submit="search()">
-        <input type="text" class="form-control" ng-model="data.query" placeholder="Search for anything on your facebook"  />
+        <input id="main-search-bar" type="text" class="form-control" ng-model="data.query" ng-disabled=!(data.posts||data.comments||data.chat) placeholder="Search for anything on your facebook" />
       </form>
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="search()">Search</button>
+        <button class="btn btn-default" type="button" ng-disabled=!(data.posts||data.comments||data.chat) ng-click="search()">Search</button>
       </span>
     </div>
     <!-- <h1 id="testing-stuff">{{data.dropped}}</h1> -->
@@ -94,10 +94,10 @@
       </div>
         <div id="fb-root"></div>
 
+        <script src="https://code.jquery.com/jquery.min.js"></script>
         <script src="static_files/js/angular.min.js"></script>
         <script src="static_files/js/angularities.js"></script>
         <script src="static_files/js/search.js"></script>
-        <script src="https://code.jquery.com/jquery.min.js"></script>
         <script src="static_files/js/bootstrap.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <script src="//connect.facebook.net/en_US/all.js"></script>
