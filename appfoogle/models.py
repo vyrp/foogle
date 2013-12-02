@@ -2,21 +2,21 @@ from google.appengine.ext import ndb
 
 
 class Comments(ndb.Model):
-    uid = ndb.IntegerProperty();
+    uid = ndb.StringProperty();
     fbid = ndb.StringProperty();
     word = ndb.StringProperty();
     timestamp = ndb.IntegerProperty();
 
 
 class Posts(ndb.Model):
-    uid = ndb.IntegerProperty();
+    uid = ndb.StringProperty();
     fbid = ndb.StringProperty();
     word = ndb.StringProperty();
     timestamp = ndb.IntegerProperty();
 
 
 class Messages(ndb.Model):
-    uid = ndb.IntegerProperty();
+    uid = ndb.StringProperty();
     fbid = ndb.StringProperty();
     word = ndb.StringProperty();
     timestamp = ndb.IntegerProperty();

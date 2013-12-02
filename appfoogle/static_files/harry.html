@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Foogle</title>
+  </head>
+  <body>
+    <div id="container" style="margin: auto; width: 800px; text-align: center;">
+      <fb:login-button autologoutlink="true"></fb:login-button>
+      <div id="fb-root"></div>
+      
+      <h1>FOOGLE</h1>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          //appId: '394904207304456',    //Server
+          appId: '336910786453085',    //Local
+          status: true,
+          xfbml: true,
+        });
+        FB.Event.subscribe('auth.authResponseChange', function(response) {
+          if (response.status === 'connected') {
+            var authResponse = FB.getAuthResponse();
+            $.post('search', JSON.stringify({
+                    "uid":"1",
+                    "sentence":"por como as com em vai the a ",
+                    "filter":"cmp",
+                    "fbid":"140",
+                    "word":"vai",
+                    "access_token":authResponse.accessToken
+                    }), function(response){
+                      console.log(response);
+                  });
+          } else if(response.status === 'not_authorized') {
+            console.log('not_authorized');
+          } else {
+            console.log('not connected');
+          }
+        });
+      };
+      (function() {
+        var e = document.createElement('script');
+        e.type = 'text/javascript';
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+      }());
+    </script>
+  </body>
+</html>
