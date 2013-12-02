@@ -7,6 +7,7 @@ import urllib2
 import webapp2
 from models import *
 from preprocess import preprocess
+from tasks import start_populate_task
 
 
 def FQL(query, access_token):
@@ -303,7 +304,8 @@ class PopulateHandler(webapp2.RequestHandler):
                 user = User.find_or_create(str(uid))
                 user.access_token = access_token
                 user.put()
-            elif 'error' in response:
+                start_populate_task(uid, access_token)
+            else:
                 status = 'error'
             
         except:

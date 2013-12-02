@@ -25,6 +25,10 @@ class Messages(ndb.Model):
 class User(ndb.Model):
     uid = ndb.StringProperty(required=True)
     access_token = ndb.StringProperty()
+    msg_ts = ndb.IntegerProperty()
+    pst_ts = ndb.IntegerProperty()
+    cmt_ts = ndb.IntegerProperty()
+    is_populating = ndb.BooleanProperty(default=False)
     
     @classmethod
     def find_or_create(cls, uid):
