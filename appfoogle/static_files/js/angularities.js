@@ -1,21 +1,36 @@
 var foogleApp = angular.module('foogleApp', []);
 foogleApp.factory('Data', function(){
-	return {dropped: false, query: ""};
+	return {
+		dropped: false, 
+		query: "",
+		alloptions: true,
+		posts: true,
+		comments: true,
+		chat:true
+	};
 })
-
-function frontendCtrl($scope, Data){
-	$scope.data = Data;
-
-	$scope.invertDropdown= function(){
-
-	}
-}
 
 function searchBar($scope, Data){
 	$scope.data = Data;
 
+	$scope.searchTypeChange=function(current){
+		slaves = document.getElementsByName("slave-checkbox");
+		master = document.getElementsByName("master-checkbox")[0];
+		if(current=="master-checkbox"){
+			$scope.data.posts = $scope.data.alloptions;
+			$scope.data.comments = $scope.data.alloptions;
+			$scope.data.chat = $scope.data.alloptions;
+		}else{
+			$scope.data.alloptions = $scope.data.posts && $scope.data.comments && $scope.data.chat;
+		}
+	}
+
+	$scope.invertDropdown=function(current){
+		$scope.data.dropped = !current;
+	}
+
 	$scope.search=function(){
-		alert($scope.data.query)
+		$scope.data.dropped = false;
 		$.post(
 	      "/search",
 	      JSON.stringify({
