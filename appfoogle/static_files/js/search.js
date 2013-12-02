@@ -36,14 +36,19 @@ function queryPost(post_id,callback){
 }
 
 function queryComment(comment_id,callback){
-	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + comment_id + '"';	 
+	query='SELECT likes,text,post_id,fromid,id FROM comment WHERE id="' + comment_id + '"';	 
 	FB.api(
 	  {
 	    method: 'fql.query',
 	    query: query
 	  },
 	  function(response) {
-	  	callback(response);
+	  	post_id=response[0].post_id;
+	  	queryPost(post_id,function(post_data){
+	  		callback(response,post_data);
+	  	});
+
+	  	
 	  });
 }
 
