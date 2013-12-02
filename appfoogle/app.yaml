@@ -20,6 +20,11 @@ handlers:
   static_files: static_files/requests.html
   upload: static_files/requests.html
 
+- url: /harry.html
+  static_files: static_files/harry.html
+  upload: static_files/harry.html
+
+
 - url: /channel.html
   static_files: static_files/channel.html
   upload: static_files/channel.html
