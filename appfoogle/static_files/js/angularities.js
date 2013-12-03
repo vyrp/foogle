@@ -77,7 +77,7 @@ function searchBar($scope, Data){
                 }
             }
             
-            alert("Pesquisa: " + $scope.data.query + " at filter: " + custom_filter);
+            console.log("Pesquisa: " + $scope.data.query + " at filter: " + custom_filter);
             console.log(json);
             $.post(
                 "/search",
