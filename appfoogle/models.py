@@ -32,7 +32,4 @@ class User(ndb.Model):
 
     @classmethod
     def find_or_create(cls, uid):
-        user = cls.query(cls.uid == uid).get()
-        if not user:
-            user = User(uid=uid)
-        return user
+        return cls.query(cls.uid == uid).get() or User(uid=uid)

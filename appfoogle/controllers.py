@@ -7,19 +7,7 @@ import urllib2
 import webapp2
 from models import *
 from preprocess import preprocess
-from tasks import start_populate_task
-
-
-def FQL(query, access_token):
-    params = {
-        'q': query,
-        'access_token': access_token
-    }
-
-    response = urllib2.urlopen('https://graph.facebook.com/fql?' + urllib.urlencode(params))
-    response_json = json.loads(response.read())
-    response.close()
-    return response_json
+from tasks import start_populate_task, FQL
 
 
 class JsonRequestHandler(webapp2.RequestHandler):
@@ -307,7 +295,15 @@ class PopulateHandler(webapp2.RequestHandler):
                 user = User.find_or_create(str(uid))
                 user.access_token = access_token
                 user.put()
-                start_populate_task(uid, access_token)
+                # start_populate_task(uid, access_token)
+
+                # Begin test
+                response = FQL('SELECT thread_id FROM thread WHERE folder_id=0 LIMIT 100', access_token)
+                if 'data' in response:
+                    status += ' :: ' + str(len(response['data']))
+                else:
+                    status += ' :: None'
+                # End test
             else:
                 status = 'error'
 
