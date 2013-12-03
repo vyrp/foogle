@@ -1,23 +1,60 @@
 body {background-color:#3F6AB5;}
 
+.icon-bar {
+	background-color:#3F6AB5;
+}
+
 .navbar-inv {
   background-color: #FFF; /* background color will be white for all browsers */
-  border-color:#FFF
+  border-color:#00F;
+}
+
+#datepicker1 {
+	margin-left: 17px;
+	text-align: right;
+	width: 80px;
+}
+
+#datepicker2 {
+	margin-left: 25px;
+	text-align: right;
+	width: 80px;
 }
 
 #fb-button-li {
 	margin-top:14px;
 }
 
-#front-main {
-	position:fixed;
-	top: 17%;
-}
-
 #main-logo { /*image dimensions: 488px x 108px;*/
-	margin-top: 60px;
+	margin-top: 100px;
 	margin-left: 30%;
 	margin-right: 30%;
 	padding-bottom: 10px;
 	width: 40%;
 }
+
+.quasi-center { /*image dimensions: 488px x 108px;*/
+	margin-left: 23%;
+	margin-right: 23%;
+	width: 54%;
+}
+
+#pseudo-dropdown { /*image dimensions: 488px x 108px;*/
+	margin-left: 23%;
+	margin-top: 5px;
+	display: inline-block;
+	max-width: 30%;
+	min-width: 100px;
+}
+
+.padded-li {
+	padding-top: 5px;
+}
+
+ul
+{
+    list-style-type: none;
+    padding:0; 
+    margin:0;
+}
+
