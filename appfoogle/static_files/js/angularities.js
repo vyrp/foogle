@@ -84,29 +84,32 @@ function searchBar($scope, Data){
                 JSON.stringify(json),
                 function(response) {
                     data=JSON.parse(response).data;
+                    console.log(data);
                     for(i in data){
-                        data[i].type='c';
+                        data[i].type='m';
                         switch(data[i].type){
                             case 'm':
-                              message_id="388551281214203_133771";//data.fbid
-                              timestamp="1378684085";//data.timestamp
-                              delta=300;
+                              message_id="466050320176931_168";//data.fbid
+                              timestamp="1385963939";//data.timestamp
+                              delta=10000;
                               queryMessage(message_id,timestamp,delta,function(response){
+                                console.log(response);
                               });
                               break;
                               case 'p':
-                              post_id="100001603548199_589109644485815";//data.fbid
-                              timestamp="1378670958";//data.timestamp
+                              post_id="100000099637951_411059209010431";//data.fbid
+                              console.log(getPostLink(post_id));
                               queryPost(post_id,function(response){
                                   console.log(response);
                               });
                               break;
                               case 'c':
                               comment_id="411272562322429";//data.fbid
-                              timestamp="1378670958";//data.timestamp
                               queryComment(comment_id,function(response,post_data){
                                   console.log(response);
                                   console.log(post_data);
+                                  post_id = post_data[0].post_id;
+                                  console.log(getPostLink(post_id));
                               });
                               break;
                           }

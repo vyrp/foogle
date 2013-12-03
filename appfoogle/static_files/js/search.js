@@ -24,7 +24,7 @@ function queryMessage(message_id,timestamp,delta,callback){
 
 
 function queryPost(post_id,callback){
-	query='SELECT message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';	 
+	query='SELECT post_id,message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';	 
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -52,5 +52,7 @@ function queryComment(comment_id,callback){
 	  });
 }
 
-
+function getPostLink(post_id){
+	return "https://www.facebook.com/" + post_id.split("_").join("/posts/");
+}
 
