@@ -4,9 +4,10 @@ import json
 import logging
 import re
 import webapp2
+from google.appengine.ext import deferred
 from models import *
 from preprocess import preprocess
-from tasks import start_populate_task, FQL
+from tasks import populate, FQL
 
 
 class JsonRequestHandler(webapp2.RequestHandler):
@@ -302,25 +303,9 @@ class DummyCreateTimestamps(webapp2.RequestHandler):
 class PopulateHandler(webapp2.RequestHandler):
     def post(self):
         status = 'success'
-
         try:
-            access_token = self.request.get('access_token')
-            response = FQL('SELECT uid FROM user WHERE uid=me()', access_token)
-
-            if 'data' in response:
-                uid = str(response['data'][0]['uid'])
-                user = User.find_or_create(uid)
-                user.access_token = access_token
-                user.put()
-                start_populate_task(uid, access_token)
-            elif 'error' in response:
-                logging.error('Facebook error: ' + str(response['error']))
-                status = 'fb error'
-            else:
-                logging.error('Facebook unknown error: ' + str(response))
-                status = 'fb error'
-
-        except Exception as e:
+            deferred.defer(populate, self.request.get('access_token'), _queue='populate')
+        except:
             logging.exception('Exception in PopulateHandler')
             status = 'exception'
 
