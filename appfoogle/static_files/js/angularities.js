@@ -89,12 +89,21 @@ function searchBar($scope, Data){
                         data[i].type='m';
                         switch(data[i].type){
                             case 'm':
+                              //message_id="388551281214203_154007";
+                              //timestamp=1386107311;
+
                               message_id="466050320176931_168";//data.fbid
                               timestamp="1385963939";//data.timestamp
-                              delta=10000;
-                              queryMessage(message_id,timestamp,delta,function(response){
+                              delta=1000;
+                             
+                              queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
                                 console.log(response);
+                                console.log(conversation_id);
+                                console.log(isgrouptalk);
+                                console.log(getMessageLink(conversation_id,isgrouptalk));
+
                               });
+                              
                               break;
                               case 'p':
                               post_id="100000099637951_411059209010431";//data.fbid
