@@ -308,8 +308,8 @@ class PopulateHandler(webapp2.RequestHandler):
             response = FQL('SELECT uid FROM user WHERE uid=me()', access_token)
 
             if 'data' in response:
-                uid = response['data'][0]['uid']
-                user = User.find_or_create(str(uid))
+                uid = str(response['data'][0]['uid'])
+                user = User.find_or_create(uid)
                 user.access_token = access_token
                 user.put()
                 start_populate_task(uid, access_token)
