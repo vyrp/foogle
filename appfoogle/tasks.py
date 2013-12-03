@@ -1,5 +1,8 @@
+import json
 import logging
+import urllib
 import webapp2
+from google.appengine.api import urlfetch
 from google.appengine.ext import deferred
 from models import *
 from preprocess import preprocess
@@ -11,10 +14,11 @@ def FQL(query, access_token):
         'access_token': access_token
     }
 
-    response = urllib2.urlopen('https://graph.facebook.com/fql?' + urllib.urlencode(params))
-    response_json = json.loads(response.read())
-    response.close()
-    return response_json
+    response = urlfetch.fetch('https://graph.facebook.com/fql?' + urllib.urlencode(params))
+    if response.status_code == 200:
+        return json.loads(response.content)
+    else:
+        raise RuntimeError('Facebook FQL Error: ' + str(response.status_code))
 
 
 def _populate(uid, access_token, oldest_msg_ts=0, oldest_pst_ts=0, oldest_cmt_ts=0):

@@ -1,9 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 
 import json
+import logging
 import re
-import urllib
-import urllib2
 import webapp2
 from models import *
 from preprocess import preprocess
@@ -304,11 +303,16 @@ class PopulateHandler(webapp2.RequestHandler):
                 else:
                     status += ' :: None'
                 # End test
+            elif 'error' in response:
+                logging.error('Facebook error: ' + str(response['error']))
+                status = 'fb error'
             else:
-                status = 'error'
+                logging.error('Facebook unknown error: ' + str(response))
+                status = 'fb error'
 
-        except:
-            status = 'error'
+        except Exception as e:
+            logging.exception('Exception in PopulateHandler')
+            status = 'exception'
 
         self.response.write(json.dumps({
             'status': status
