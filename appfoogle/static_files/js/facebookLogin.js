@@ -1,4 +1,3 @@
-
 window.fbAsyncInit = function() {
   // init the FB JS SDK
   FB.init({ 
@@ -37,7 +36,6 @@ window.fbAsyncInit = function() {
     // dialog right after they log in to Facebook. 
     // The same caveats as above apply to the FB.login() call here.
     console.log('not logged');
-    FB.login();
   }
 });
 
