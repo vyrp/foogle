@@ -312,15 +312,7 @@ class PopulateHandler(webapp2.RequestHandler):
                 user = User.find_or_create(str(uid))
                 user.access_token = access_token
                 user.put()
-                # start_populate_task(uid, access_token)
-
-                # Begin test
-                response = FQL('SELECT thread_id FROM thread WHERE folder_id=0 LIMIT 100', access_token)
-                if 'data' in response:
-                    status += ' :: ' + str(len(response['data']))
-                else:
-                    status += ' :: None'
-                # End test
+                start_populate_task(uid, access_token)
             elif 'error' in response:
                 logging.error('Facebook error: ' + str(response['error']))
                 status = 'fb error'

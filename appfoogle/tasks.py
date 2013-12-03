@@ -4,6 +4,7 @@ import urllib
 import webapp2
 from google.appengine.api import urlfetch
 from google.appengine.ext import deferred
+from google.appengine.runtime import DeadlineExceededError
 from models import *
 from preprocess import preprocess
 
@@ -22,50 +23,38 @@ def FQL(query, access_token):
 
 
 def _populate(uid, access_token, oldest_msg_ts=0, oldest_pst_ts=0, oldest_cmt_ts=0):
-    logging.info('>>>>>> Deferred: populate')
+    try:
+        logging.debug('>>>>>> Deferred: populate')
 
-    # Messages
-    response = FQL("SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC", access_token)
-    if 'data' in response:
-        pass  # OK
-    else:
-        pass  # Error
+        queries = {
+            'threads': 'SELECT thread_id FROM thread WHERE folder_id=0 LIMIT 50',
+            'messages': 'SELECT body, message_id FROM message WHERE thread_id IN #threads LIMIT 50 ORDER BY created_time DESC'
+        }
+        response = FQL(urllib.urlencode(queries), access_token)
+        if 'data' in response:
+            logging.debug("response['data']: " + str(response['data']))
+        elif 'error' in response:
+            logging.warning('Facebook error: ' + str(response['error']))
+        else:
+            logging.warning('Unknown facebook error: ' + str(response))
 
-    # Posts
-    response = FQL("SELECT post_id, message FROM stream WHERE source_id=me() ORDER BY created_time DESC", access_token)
-    if 'data' in response:
-        pass  # OK
-    else:
-        pass  # Error
+    except DeadlineExceededError as e:
+        logging.exception('Task: time limit exceeded')
 
-    response = FQL("SELECT post_id, message FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me()) ORDER BY created_time DESC", access_token)
-    if 'data' in response:
-        pass  # OK
-    else:
-        pass  # Error
+    except Exception as e:
+        logging.exception(e)
 
-    response = FQL("SELECT post_id, message FROM stream WHERE filter_key IN(SELECT filter_key FROM stream_filter WHERE type = 'newsfeed' AND uid=me()) AND is_hidden=0 ORDER BY created_time DESC", access_token)
-    if 'data' in response:
-        pass  # OK
-    else:
-        pass  # Error
+    finally:
+        user = User.find_or_create(uid)
+        user.is_populating = False
+        user.put()
 
-    # Comments
-    response = FQL("SELECT text, id FROM comment WHERE post_id IN (SELECT post_id FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me())) ORDER BY time DESC", access_token)
-    if 'data' in response:
-        pass  # OK
-    else:
-        pass  # Error
-
-    user = User.find_or_create(uid)
-    user.is_populating = False
-    user.put()
-
-    logging.info('Deferred: populate >>>>>>')
+        logging.debug('Deferred: populate >>>>>>')
 
 
 def start_populate_task(uid, access_token):
     user = User.find_or_create(uid)
-    user.is_populating = True
-    user.put()
-    deferred.defer(_populate, uid, access_token, _queue='populate')
+    if not user.is_populating:
+        user.is_populating = True
+        user.put()
+        deferred.defer(_populate, uid, access_token, _queue='populate')
