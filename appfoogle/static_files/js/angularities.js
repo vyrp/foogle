@@ -39,6 +39,10 @@ function searchBar($scope, Data){
         $scope.data.dropped = false;
 
         var authResponse = FB.getAuthResponse();
+        if(authResponse == undefined){
+          window.setTimeout(function() {$scope.search()}, 100);
+          return;
+        }
         access_token=authResponse.accessToken;
         if(access_token==undefined){
             alert("Please, log in our app.");
@@ -52,14 +56,32 @@ function searchBar($scope, Data){
             custom_filter += $scope.data.chat ? "m" : "";
             custom_filter += $scope.data.posts ? "p" : "";
         }
+
+        json = {
+          "access_token":access_token,
+          "sentence":$scope.data.query,
+          "filter": custom_filter
+        };
+
+        if($scope.data.from != undefined){
+          timestamp = getTimestamp($scope.data.from);
+          if(timestamp != NaN){
+            json.from = timestamp;
+          }
+        }
+        
+        if($scope.data.to != undefined){
+          timestamp = getTimestamp($scope.data.to);
+          if(timestamp != NaN){
+            json.to = timestamp;
+          }
+        }
+        
         alert("Pesquisa: " + $scope.data.query + " at filter: " + custom_filter);
+        console.log(json);
         $.post(
           "/search",
-          JSON.stringify({
-            "access_token":access_token,
-            "sentence":$scope.data.query,
-            "filter": custom_filter
-           }),
+          JSON.stringify(json),
           function(response) {
               data=JSON.parse(response).data;
 

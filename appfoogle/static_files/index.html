@@ -85,10 +85,10 @@
             <div class="tab-pane fade" id="when">
               <ul>
                 <li class="padded-li">
-                  <span>Since: <input type="text" id="datepicker1"></span>
+                  <span>Since: <input type="text" id="datepicker1" ng-model="data.from"></span>
                 </li>
                 <li class="padded-li">
-                  <span>Until:  <input type="text" id="datepicker2"></span>
+                  <span>Until:  <input type="text" id="datepicker2" ng-model="data.to"></span>
                 </li>
               </ul>
               </div>
@@ -106,11 +106,21 @@
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <script src="//connect.facebook.net/en_US/all.js"></script>
         <script src="static_files/js/facebookLogin.js"></script>
+        <script src="static_files/js/utils.js"></script>
 
         <script>
         $(function() {
-            $( "#datepicker1" ).datepicker();
-            $( "#datepicker2" ).datepicker();
+            $.datepicker.regional['pt-BR'] = {
+                dateFormat: 'dd/mm/yy'
+              };
+          $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+            $( "#datepicker1" ).datepicker(
+              {
+                onSelect: function(dateText, inst){
+                  $("#datepicker2").datepicker("option", "minDate", $.datepicker.parseDate("dd/mm/yy", dateText));
+                }
+              });
+          $( "#datepicker2" ).datepicker();
           });
         </script>
 
