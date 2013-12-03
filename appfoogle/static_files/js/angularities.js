@@ -8,8 +8,8 @@ foogleApp.factory('Data', function(){
         posts: true,
         comments: true,
         chat:true,
-        backcolorblue: "#3F6AB5";
-        backcolorwhite: "#FFF";
+        backcolorblue: "#3F6AB5",
+        backcolorwhite: "#FFF"
     };
 })
 
