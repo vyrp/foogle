@@ -14,7 +14,6 @@ class JsonRequestHandler(webapp2.RequestHandler):
         try:
             body = json.loads(self.request.body)
         except:
-            self.error(400)
             self.response.write('400 invalid json in request body')
             return None
         return body
@@ -38,23 +37,42 @@ class SearchHandler(JsonRequestHandler):
         if not limit:
             limit = 20
 
-        return {"offset": offset, "limit": limit}
+        datefrom = None
+        if 'from' in body:
+            datefrom = body['from']
+            if not isinstance(datefrom, int):
+                datefrom = None
+        if not datefrom:
+            datefrom = 0
+
+        dateto = None
+        if 'to' in body:
+            dateto = body['to']
+            if not isinstance(dateto, int):
+                dateto = None
+        if not dateto:
+            dateto = 100000000000000000
+
+        return {"offset": offset, "limit": limit, "to": dateto, "from": datefrom}
 
     def getWord(self, body):
         if 'word' in body:
             word = body['word']
         else:
-            self.error(400)
             self.response.write('400 missing word')
             return None
         return word
 
-    def queryOcurrences(self, uid, word, offset, limit, cls):
+    def queryOcurrences(self, uid, word, offset, limit, cls, datefrom, dateto):
         try:
-            gqlOcurrences = cls.query(ndb.AND(cls.uid == uid, cls.word == word)).order(cls.timestamp)
+            gqlOcurrences = cls.query(
+                ndb.AND(
+                    ndb.AND(cls.uid == uid, cls.word == word),
+                    ndb.AND(cls.timestamp <= dateto, cls.timestamp >= datefrom)
+                )
+            ).order(cls.timestamp)
             ocurrences = gqlOcurrences.fetch(offset=offset, limit=limit)
         except:
-            self.error(500)
             self.response.write('500 error querying database')
             return None
         return ocurrences
@@ -76,8 +94,12 @@ class SearchHandler(JsonRequestHandler):
             return None
         offset = parameters['offset']
         limit = parameters['limit']
+        datefrom = parameters['from']
+        dateto = parameters['to']
 
-        ocurrences = self.queryOcurrences(uid=uid, word=word, offset=offset, limit=limit, cls=cls)
+        ocurrences = self.queryOcurrences(
+            uid=uid, word=word, offset=offset,
+            limit=limit, cls=cls, datefrom=datefrom, dateto=dateto)
         if ocurrences is None:
             return None
         fbids = self.processOcurrences(ocurrences)
@@ -94,7 +116,6 @@ class PutCommentHandler(webapp2.RequestHandler):
         try:
             body = json.loads(self.request.body)
         except:
-            self.error(400)
             self.response.write('400 invalid json in request body')
             return
         comment = Comments(uid=body['uid'], fbid=body['fbid'], word=body['word'], timestamp=1)
@@ -108,7 +129,6 @@ class PutMessageHandler(webapp2.RequestHandler):
         try:
             body = json.loads(self.request.body)
         except:
-            self.error(400)
             self.response.write('400 invalid json in request body')
             return
         message = Messages(uid=body['uid'], fbid=body['fbid'], word=body['word'])
@@ -122,7 +142,6 @@ class MultiSearchHandler(SearchHandler):
         if 'sentence' in body:
             sentence = body['sentence']
         else:
-            self.error(400)
             self.response.write('400 missing sentence')
             return None
         return sentence
@@ -226,7 +245,6 @@ class GetFromAllHandler(MultiSearchHandler):
         if body is None:
             return
         if not 'access_token' in body:
-            self.error(400)
             self.response.write('400 access_token missing')
             return
         access_token = body['access_token']
