@@ -1,0 +1,58 @@
+<div class="input-group quasi-center">
+  <div class="input-group-btn">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-click="invertDropdown(data.dropped)"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
+  </div>
+  <form ng-submit="search()">
+    <input id="main-search-bar" type="text" class="form-control" ng-model="data.query" ng-disabled=!(data.posts||data.comments||data.chat) placeholder="Search for anything on your facebook" />
+  </form>
+  <span class="input-group-btn">
+    <button class="btn btn-default" type="button" ng-disabled=!(data.posts||data.comments||data.chat) ng-click="search()">Search</button>
+  </span>
+</div>
+
+<!-- The Pseudo-Dropdown  -->
+
+<div class="panel panel-default" id="pseudo-dropdown" ng-show=data.dropped>
+  <div class="panel-body">
+    <ul class="nav nav-pills">
+      <li class="active"><a href="#where" data-toggle="pill">Where</a></li>
+      <li><a href="#when" data-toggle="pill">When</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="where">
+        <ul class="unstyled">
+          <li>
+            <input type="checkbox" ng-model="data.alloptions" name="master-checkbox" ng-change="searchTypeChange('master-checkbox')">
+            <span class="glyphicon glyphicon-search"></span>
+            <span>Everywhere</span>
+          </li>
+          <li>
+            <input name="slave-checkbox" type="checkbox" ng-model="data.posts" ng-change="searchTypeChange('slave-checkbox')">
+            <span class="glyphicon glyphicon-share"></span>
+            <span>Posts</span>
+          </li>
+          <li>
+            <input name="slave-checkbox" type="checkbox" ng-model="data.comments" ng-change="searchTypeChange('slave-checkbox')">
+            <span class="glyphicon glyphicon-bullhorn"></span>
+            <span>Comments</span>
+          </li>
+          <li>
+            <input name="slave-checkbox" type="checkbox" ng-model="data.chat" ng-change="searchTypeChange('slave-checkbox')">
+            <span class="glyphicon glyphicon-comment"></span>
+            <span>Chat</span>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-pane fade" id="when">
+        <ul>
+          <li class="padded-li">
+            <span>Since: <input type="text" id="datepicker1" ng-model="data.from"></span>
+          </li>
+          <li class="padded-li">
+            <span>Until:  <input type="text" id="datepicker2" ng-model="data.to"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

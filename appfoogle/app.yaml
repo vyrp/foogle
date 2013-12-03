@@ -16,6 +16,10 @@ handlers:
   static_files: static_files/index.html
   upload: static_files/index.html
 
+- url: /searchbar.html
+  static_files: static_files/searchbar.html
+  upload: static_files/searchbar.html
+
 - url: /requests.html
   static_files: static_files/requests.html
   upload: static_files/requests.html
