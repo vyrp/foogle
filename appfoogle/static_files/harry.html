@@ -27,7 +27,7 @@
           if (response.status === 'connected') {
             var authResponse = FB.getAuthResponse();
             access_token=authResponse.accessToken;
-            $.post('search', JSON.stringify({
+            $.post('putcomment', JSON.stringify({
                     "uid":"1",
                     "sentence":"por como as com em vai the a ",
                     "filter":"cmp",

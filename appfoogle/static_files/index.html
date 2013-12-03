@@ -39,8 +39,19 @@
   <!-- The Searching Screen -->
 
   <div id="front-main" ng-controller="searchBar" ng-show=data.searchscreen>
+
     <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
+
     <searchbar/>
+
+  </div>
+
+  <!-- The Results Screen -->
+
+  <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
+    <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
+    <searchbar/>
+    <h1>RESULT!!</h1>
   </div>
 
   <div id="fb-root"></div>

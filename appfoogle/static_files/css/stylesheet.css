@@ -35,10 +35,16 @@
 	width: 40%;
 }
 
+#alter-logo { /*image dimensions: 488px x 108px;*/
+	position: fixed;
+	margin-left: 3%;
+	width: 11%;
+}
+
 .quasi-center { /*image dimensions: 488px x 108px;*/
-	margin-left: 23%;
-	margin-right: 23%;
-	width: 54%;
+	margin-left: 22%;
+	margin-right: 22%;
+	width: 56%;
 }
 
 #pseudo-dropdown { /*image dimensions: 488px x 108px;*/

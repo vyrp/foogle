@@ -2,6 +2,7 @@ var foogleApp = angular.module('foogleApp', []);
 foogleApp.factory('Data', function(){
     return {
         searchscreen: true,
+        resultscreen: false,
         dropped: false, 
         query: "",
         alloptions: true,
@@ -12,6 +13,10 @@ foogleApp.factory('Data', function(){
 })
 
 function miscCtrl($scope, Data){
+    $scope.data = Data;
+}
+
+function resultsCtrl($scope, Data){
     $scope.data = Data;
 }
 
@@ -37,7 +42,9 @@ function searchBar($scope, Data){
 
     $scope.search=function(){
         $scope.data.dropped = false;
-        if($scope.data.query.length>0){
+        if($scope.data.query.length>0 && userLogged){
+          $scope.data.searchscreen = false;
+          $scope.data.resultscreen = true;
             var authResponse = FB.getAuthResponse();
             if(authResponse == undefined){
                 window.setTimeout(function() {$scope.search()}, 100);
@@ -86,13 +93,14 @@ function searchBar($scope, Data){
                     data=JSON.parse(response).data;
                     console.log(data);
                     for(i in data){
-                        data[i].type='m';
+                        data[i].type='p';
                         switch(data[i].type){
                             case 'm':
                               message_id="466050320176931_168";//data.fbid
                               timestamp="1385963939";//data.timestamp
                               delta=10000;
                               queryMessage(message_id,timestamp,delta,function(response){
+
                                 console.log(response);
                               });
                               break;
@@ -114,8 +122,12 @@ function searchBar($scope, Data){
                               break;
                           }
                       }
+
                   });
-}
+          }else if(!userLogged){
+            alert("Please login to use the app.");
+          }
+
 }
 }    
 

@@ -4,3 +4,10 @@ foogleApp.directive("searchbar", function(){
     templateUrl: "/searchbar.html"
   }
 });
+
+foogleApp.directive("navbar", function(){
+  return {
+    restrict: "E",
+    templateUrl: "/searchbar.html"
+  }
+});
