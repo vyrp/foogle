@@ -1,4 +1,6 @@
-body {background-color:#3F6AB5;}
+.bluebkg {background-color:#3F6AB5;}
+
+.whitebkg {background-color:#FFF;}
 
 .icon-bar {
 	background-color:#3F6AB5;
@@ -33,18 +35,48 @@ body {background-color:#3F6AB5;}
 	width: 40%;
 }
 
-.quasi-center { /*image dimensions: 488px x 108px;*/
-	margin-left: 23%;
-	margin-right: 23%;
-	width: 54%;
+#alter-logo { /*image dimensions: 488px x 108px;*/
+	position: absolute;
+	height: 50px;
+	margin-top: -6px;
+	margin-left: 20px;
 }
 
-#pseudo-dropdown { /*image dimensions: 488px x 108px;*/
-	margin-left: 23%;
+.quasi-center { /*image dimensions: 488px x 108px;*/
+	margin-left: 22%;
+	margin-right: 22%;
+	width: 56%;
+}
+
+.screen-center{
+	margin-left: 50%;
+	margin-right: 50%;
+	margin-top:200px;
+}
+
+.quasi-left{
+	margin-left: 160px;
+	width: 56%;
+}
+
+.little-left{
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.main-dropdown {
+	margin-left: 22%;
 	margin-top: 5px;
 	display: inline-block;
-	max-width: 30%;
-	min-width: 100px;
+	max-width: 173px;
+	min-width: 140px;
+}
+
+.sub-dropdown {
+	margin-left: 160px;
+	max-width: 173px;
+	min-width: 140px;
+	position: absolute;
 }
 
 .padded-li {
@@ -58,3 +90,24 @@ ul
     margin:0;
 }
 
+td{
+	padding-right: 20px;
+}
+
+.username-field{
+	white-space: nowrap;
+}
+
+.said-when{
+	color: #AAA;
+	min-width: 200px;
+}
+
+.big{
+	font-size: 25px;
+}
+
+.profile-pic{
+	width: 40px;
+	padding-left: 3px;
+}

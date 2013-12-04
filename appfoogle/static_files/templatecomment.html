@@ -1,0 +1,28 @@
+<div class="panel panel-default little-left">
+  <div class="panel-heading">
+    <a class="big panel-title" href={{result.post_link+"?comment_id="+result.response[0].id}}>Comment on a post on {{result.response[0].time}}</a>
+  </div>
+  
+  <table class="table-striped table-hover table-condensed">
+    <tbody>
+      <tr>
+        <td><a href={{result.post_link}}><strong>Original Post</strong></a></td>
+        <td class="username-field">
+          <a href={{"http://facebook.com/"+result.post_data[0].actor_id}}><img class="profile-pic" src={{result.post_data[0].pic}}></img></a> <a href={{"http://facebook.com/"+result.post_data[0].actor_id}}><span>{{result.post_data[0].name}}</span></a>
+        </td>
+        <td>{{result.post_data[0].message}}</td>
+        <td style="padding-right=10px;">{{result.post_data[0].like_info.like_count}} <span class="glyphicon glyphicon-thumbs-up"></span></td>
+        <td>{{result.post_data[0].share_info.share_count}} <span class="glyphicon glyphicon-share"></span><td>
+      </tr>
+      <tr>
+        <td><a href={{result.post_link+"?comment_id="+result.response[0].id}}><strong>Comment</strong></a></td>
+        <td class="username-field">
+          <a href={{"http://facebook.com/"+result.response[0].fromid}}><img class="profile-pic" src={{result.response[0].pic}}></img></a> <a href={{"http://facebook.com/"+result.response[0].fromid}}><span>{{result.response[0].name}}</span></a>
+        </td>
+        <td>{{result.response[0].text}}</td>
+        <td style="padding-right=10px;">{{result.response[0].likes}} <span class="glyphicon glyphicon-thumbs-up"></span></td>
+        <td><td>
+      </tr>
+    </tbody>
+  </table>
+</div>

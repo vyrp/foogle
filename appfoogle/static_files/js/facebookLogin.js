@@ -1,4 +1,4 @@
-
+var userLogged = false;
 window.fbAsyncInit = function() {
   // init the FB JS SDK
   FB.init({ 
@@ -19,6 +19,7 @@ window.fbAsyncInit = function() {
     // login status of the person. In this case, we're handling the situation where they 
     // have logged in to the app.
     console.log('connected');
+    userLogged = true;
     testAPI();
   } else if (response.status === 'not_authorized') {
     // In this case, the person is logged into Facebook, but not into the app, so we call
@@ -29,6 +30,7 @@ window.fbAsyncInit = function() {
     // result from direct interaction from people using the app (such as a mouse click)
     // (2) it is a bad experience to be continually prompted to login upon page load.
     console.log('not_authorized');
+    userLogged = false;
     FB.login();
   } else {
     // In this case, the person is not logged into Facebook, so we call the login() 
@@ -37,7 +39,7 @@ window.fbAsyncInit = function() {
     // dialog right after they log in to Facebook. 
     // The same caveats as above apply to the FB.login() call here.
     console.log('not logged');
-    FB.login();
+    userLogged = false;
   }
 });
 

@@ -8,8 +8,10 @@
   <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
 
 </head>
-<body ng-app="foogleApp">
-  <!-- style="background-color: {{data.backcolorblue}};" -->
+<body ng-app="foogleApp" ng-controller="miscCtrl" class={{data.searchscreen?"bluebkg":"whitebkg"}}>
+
+  <!-- The Navbar -->
+
   <div class="navbar navbar-inv" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -34,85 +36,89 @@
     </div><!-- /.container -->
   </div><!-- /.navbar -->
 
-<!-- NAVBAR ENDS HERE -->
-<!-- Searching screen -->
+  <!-- The Searching Screen -->
+  <div id="front-main" ng-controller="searchCtrl" ng-show=data.searchscreen>
 
-  <div id="front-main" ng-controller="searchBar" ng-show=data.searchscreen>
     <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
-    <div class="input-group quasi-center">
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-click="invertDropdown(data.dropped)"><span class="glyphicon glyphicon-search" /><span class="caret" /></button>
+
+    <searchbar cssclasszero="quasi-center" cssclassone="main-dropdown" count="1"></searchbar>
+  </div>
+
+  <!-- The Results Screen -->
+
+  <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
+    <div id="front-main" ng-controller="searchCtrl" >
+      <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
+    
+      <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
+    <div/>
+    <hr/>
+
+    <div ng-repeat="result in data.results">
+      <div ng-if=result.ismessage>
+        <messageresult></messageresult>
       </div>
-      <form ng-submit="search()">
-        <input id="main-search-bar" type="text" class="form-control" ng-model="data.query" ng-disabled=!(data.posts||data.comments||data.chat) placeholder="Search for anything on your facebook" />
-      </form>
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-disabled=!(data.posts||data.comments||data.chat) ng-click="search()">Search</button>
-      </span>
+      <div ng-if=result.ispost>
+        <postresult></postresult>
+      </div>
+      <div ng-if=result.iscomment>
+        <commentresult></commentresult>
+      </div>
     </div>
-    <!-- <h1 id="testing-stuff">{{data.dropped}}</h1> -->
-    <div class="panel panel-default" id="pseudo-dropdown" ng-show=data.dropped>
-      <div class="panel-body">
-        <ul class="nav nav-pills">
-          <li class="active"><a href="#where" data-toggle="pill">Where</a></li>
-          <li><a href="#when" data-toggle="pill">When</a></li>
-        </ul>
-        <div id="myTabContent" class="tab-content">
-          <div class="tab-pane fade in active" id="where">
-            <ul class="unstyled">
-              <li>
-                <input type="checkbox" ng-model="data.alloptions" name="master-checkbox" ng-change="searchTypeChange('master-checkbox')">
-                <span class="glyphicon glyphicon-search"></span>
-                <span>Everywhere</span>
-              </li>
-              <li>
-                <input name="slave-checkbox" type="checkbox" ng-model="data.posts" ng-change="searchTypeChange('slave-checkbox')">
-                <span class="glyphicon glyphicon-share"></span>
-                <span>Posts</span>
-              </li>
-              <li>
-                <input name="slave-checkbox" type="checkbox" ng-model="data.comments" ng-change="searchTypeChange('slave-checkbox')">
-                <span class="glyphicon glyphicon-bullhorn"></span>
-                <span>Comments</span>
-              </li>
-              <li>
-                <input name="slave-checkbox" type="checkbox" ng-model="data.chat" ng-change="searchTypeChange('slave-checkbox')">
-                <span class="glyphicon glyphicon-comment"></span>
-                <span>Chat</span>
-              </li>
-            </ul>
-            </div>
-            <div class="tab-pane fade" id="when">
-              <ul>
-                <li class="padded-li">
-                  <span>Since: <input type="text" id="datepicker1"></span>
-                </li>
-                <li class="padded-li">
-                  <span>Until:  <input type="text" id="datepicker2"></span>
-                </li>
-              </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-        <div id="fb-root"></div>
+    <div id="loading" class="screen-center" ng-show=data.loading></div>
 
-        <script src="https://code.jquery.com/jquery.min.js"></script>
-        <script src="static_files/js/angular.min.js"></script>
-        <script src="static_files/js/angularities.js"></script>
-        <script src="static_files/js/search.js"></script>
-        <script src="static_files/js/bootstrap.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        <script src="//connect.facebook.net/en_US/all.js"></script>
-        <script src="static_files/js/facebookLogin.js"></script>
 
-        <script>
-        $(function() {
-            $( "#datepicker1" ).datepicker();
-            $( "#datepicker2" ).datepicker();
-          });
-        </script>
+  </div>
+  <div id="fb-root"></div>
 
-      </body>
-      </html>
+  <script src="https://code.jquery.com/jquery.min.js"></script>
+  <script src="static_files/js/angular.min.js"></script>
+  <script src="static_files/js/angularities.js"></script>
+  <script src="static_files/js/directives.js"></script>
+  <script src="static_files/js/search.js"></script>
+  <script src="static_files/js/bootstrap.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="//connect.facebook.net/en_US/all.js"></script>
+  <script src="static_files/js/facebookLogin.js"></script>
+  <script src="static_files/js/utils.js"></script>
+  <script src="static_files/js/spin.min.js"></script>
+  
+
+  <script>
+  $(function() {
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 32, // The length of each line
+      width: 6, // The line thickness
+      radius: 25, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      color: '#000', // #rgb or #rrggbb or array of colors
+      speed: 1.2, // Rounds per second
+      trail: 38, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: 'auto', // Top position relative to parent in px
+      left: 'auto' // Left position relative to parent in px
+    };
+    var target = document.getElementById('loading');
+    var spinner = new Spinner(opts).spin(target);
+    $.datepicker.regional['pt-BR'] = {
+      dateFormat: 'dd/mm/yy'
+    };
+    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+    $( "#datepicker1" ).datepicker(
+    {
+      onSelect: function(dateText, inst){
+        $("#datepicker2").datepicker("option", "minDate", $.datepicker.parseDate("dd/mm/yy", dateText));
+      }
+    });
+    $( "#datepicker2" ).datepicker();
+  });
+  </script>
+
+</body>
+</html>
