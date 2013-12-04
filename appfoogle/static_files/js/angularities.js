@@ -108,6 +108,11 @@ function searchBar($scope, Data){
                         timestamp="1385963939";//data.timestamp
                         delta=1000;
                         queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
+                            for (var index = 0; index < response.length; ++index){
+                              var tempDate = new Date(response[index].created_time*1000);
+                              var tempStr = tempDate.toGMTString();
+                              response[index].created_time = tempStr.substring(0,tempStr.length - 4);
+                            }
                             single_result.response = response;
                             // console.log(response);
                             single_result.conversation_id = conversation_id;

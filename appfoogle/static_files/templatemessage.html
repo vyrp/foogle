@@ -8,12 +8,14 @@
       <tr>
         <th>Who</th>
         <th>Said What</th>
+        <th>When</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="phrase in result.response">
-        <td class="said-who">{{phrase.author_id}}:</td>
-        <td>{{phrase.body}}</td>
+        <td class="said-who"><a href={{"http://facebook.com/"+phrase.author_id}}>{{phrase.author_id}}:</a></td>
+        <td class="said-what">{{phrase.body}}</td>
+        <td>{{phrase.created_time}}</td>
       </tr>
     </tbody>
   </table>

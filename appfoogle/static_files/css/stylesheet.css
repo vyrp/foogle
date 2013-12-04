@@ -73,9 +73,15 @@ ul
 }
 
 .said-who{
-	color: #00F;
-	text-decoration: underline;
 	padding-right: 20px;
+}
+
+.said-what{
+	padding-right: 20px;
+}
+
+.said-when{
+	color: #AAA;
 }
 
 .big{
