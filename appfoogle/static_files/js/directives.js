@@ -3,6 +3,7 @@ foogleApp.directive("searchbar", function(){
     restrict: "E",
     templateUrl: "/searchbar.html",
     link: function(scope, element,attrs){
+      scope.count = attrs.count;
       element.children().addClass(attrs.cssclasszero);
       element.children().next().removeClass(attrs.cssclasszero);
       element.children().next().addClass(attrs.cssclassone);

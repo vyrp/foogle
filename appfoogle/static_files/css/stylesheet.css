@@ -69,6 +69,7 @@
 	margin-left: 160px;
 	max-width: 173px;
 	min-width: 140px;
+	position: absolute;
 }
 
 .padded-li {

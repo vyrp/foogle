@@ -38,21 +38,20 @@
 
   <!-- The Searching Screen -->
 
-  <div id="front-main" ng-controller="searchBar" ng-show=data.searchscreen>
+  <div id="front-main" ng-controller="searchCtrl" ng-show=data.searchscreen>
 
     <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
 
-    <searchbar cssclasszero="quasi-center" cssclassone="main-dropdown" id="main-search-input"></searchbar>
-
+    <searchbar cssclasszero="quasi-center" cssclassone="main-dropdown" count="1"></searchbar>
   </div>
 
   <!-- The Results Screen -->
 
   <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
-    <div id="front-main" ng-controller="searchBar" >
+    <div id="front-main" ng-controller="searchCtrl" >
       <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
     
-      <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown"></searchbar>
+      <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
     <div/>
     <hr/>
 

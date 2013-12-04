@@ -15,11 +15,11 @@
 <div class="panel panel-default main-dropdown" ng-show=data.dropped>
   <div class="panel-body">
     <ul class="nav nav-pills">
-      <li class="active"><a href="#where" data-toggle="pill">Where</a></li>
-      <li><a href="#when" data-toggle="pill">When</a></li>
+      <li class="active"><a href={{"#where"+count}} data-toggle="pill">Where</a></li>
+      <li><a href={{"#when"+count}} data-toggle="pill">When</a></li>
     </ul>
     <div id="myTabContent" class="tab-content">
-      <div class="tab-pane fade in active" id="where">
+      <div class="tab-pane fade in active" id={{"where"+count}}>
         <ul class="unstyled">
           <li>
             <input type="checkbox" ng-model="data.alloptions" name="master-checkbox" ng-change="searchTypeChange('master-checkbox')">
@@ -43,7 +43,7 @@
           </li>
         </ul>
       </div>
-      <div class="tab-pane fade" id="when">
+      <div class="tab-pane fade" id={{"when"+count}}>
         <ul>
           <li class="padded-li">
             <span>Since: <input type="text" id="datepicker1" ng-model="data.from"></span>

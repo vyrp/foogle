@@ -17,7 +17,7 @@ var i=1;
 
 function miscCtrl($scope, Data){
     $scope.data = Data;
-
+    $scope.count = 0;
 
     $scope.searchTypeChange=function(current){
         slaves = document.getElementsByName("slave-checkbox");
@@ -187,15 +187,13 @@ function miscCtrl($scope, Data){
 
 function resultsCtrl($scope, Data){
     $scope.data = Data;
-
+    $scope.count = 1;
 }
 
-function searchBar($scope, Data){
+function searchCtrl($scope, Data){
     
-    $scope.data = Data;
-
-    
-
+    $scope.data = Data;    
+    $scope.count = 42;
     $scope.invertDropdown=function(current){
         $scope.data.dropped = !current;
     }
