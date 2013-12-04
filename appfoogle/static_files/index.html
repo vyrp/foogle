@@ -53,10 +53,8 @@
       <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
     <div/>
     <hr/>
-    <div id="loading" class="screen-center" ng-show=data.loading></div>
 
     <div ng-repeat="result in data.results">
-      
       <div ng-if=result.ismessage>
         <messageresult></messageresult>
       </div>
@@ -67,6 +65,7 @@
         <commentresult></commentresult>
       </div>
     </div>
+    <div id="loading" class="screen-center" ng-show=data.loading></div>
 
 
   </div>

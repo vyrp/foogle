@@ -88,6 +88,7 @@ function miscCtrl($scope, Data){
                 data=JSON.parse(response).data;
                 console.log(data);
                 for(i in data){
+                    $scope.data.loading=true;
                     var single_result = {};
                     data[i].type='p';
 
@@ -172,7 +173,6 @@ function miscCtrl($scope, Data){
                             $scope.data.results.push(single_result);
                             $scope.data.loading = false;
                             $scope.$digest();
-
                         });
                         break;
                     }
