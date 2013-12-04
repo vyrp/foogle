@@ -15,13 +15,25 @@ li.active {
 	background-color:#EEF;
 }
 
-#datepicker1 {
+#datepicker11 {
 	margin-left: 17px;
 	text-align: right;
 	width: 80px;
 }
 
-#datepicker2 {
+#datepicker12 {
+	margin-left: 25px;
+	text-align: right;
+	width: 80px;
+}
+
+#datepicker21 {
+	margin-left: 17px;
+	text-align: right;
+	width: 80px;
+}
+
+#datepicker22 {
 	margin-left: 25px;
 	text-align: right;
 	width: 80px;

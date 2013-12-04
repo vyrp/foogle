@@ -111,6 +111,8 @@
   
 
   <script>
+
+
   $(function() {
     var opts = {
       lines: 13, // The number of lines to draw
@@ -132,17 +134,30 @@
     };
     var target = document.getElementById('loading');
     var spinner = new Spinner(opts).spin(target);
-    $.datepicker.regional['pt-BR'] = {
-      dateFormat: 'dd/mm/yy'
-    };
-    $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-    $( "#datepicker1" ).datepicker(
-    {
-      onSelect: function(dateText, inst){
-        $("#datepicker2").datepicker("option", "minDate", $.datepicker.parseDate("dd/mm/yy", dateText));
-      }
-    });
-    $( "#datepicker2" ).datepicker();
+    
+
+    window.setTimeout(function() {
+
+      $.datepicker.regional['pt-BR'] = {
+        dateFormat: 'dd/mm/yy'
+      };
+      $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+      $( "#datepicker11" ).datepicker(
+      {
+        onSelect: function(dateText, inst){
+          $("#datepicker12").datepicker("option", "minDate", $.datepicker.parseDate("dd/mm/yy", dateText));
+        }
+      });
+      $( "#datepicker12" ).datepicker();
+      console.log("atualizou datepicker");
+
+    }, 1000);
+    
+
+
+
+    
+
   });
   </script>
 

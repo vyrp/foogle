@@ -70,9 +70,21 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 	  function(response) {
 	  	 
 	  	if(JSON.stringify(response).indexOf(message_id)!=-1){
+	  		if(!isgrouptalk){
+	  			response.push({'author_id':conversation_id});
+	  		}
 
 	  		getNameAndPhoto(response,function(x){return x.author_id},function(newresponse){
-	  			callback(newresponse,conversation_id,isgrouptalk);
+	  			
+	  			if(!isgrouptalk){
+	  				user = newresponse.pop();
+	  			}
+	  			else{
+	  				user=undefined;
+	  			}
+
+
+	  			callback(newresponse,conversation_id,isgrouptalk,user);
 	  		});
 	  	}
 	  	else{
