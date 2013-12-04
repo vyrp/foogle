@@ -104,11 +104,11 @@ function miscCtrl($scope, Data){
                         queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
                             for (var index = 0; index < response.length; ++index){
                               var tempDate = new Date(response[index].created_time*1000);
-                              var tempStr = tempDate.toGMTString();
+                              var tempStr = tempDate.toUTCString();
                               response[index].created_time = tempStr.substring(0,tempStr.length - 4);
                             }
                             single_result.response = response;
-                            console.log(response);
+                            // console.log(response);
                             single_result.conversation_id = conversation_id;
                             // console.log(conversation_id);
                             single_result.isgrouptalk = isgrouptalk;
@@ -132,13 +132,14 @@ function miscCtrl($scope, Data){
                         queryPost(post_id,function(response){
                             for (var index = 0; index < response.length; ++index){
                               var tempDate = new Date(response[index].created_time*1000);
-                              var tempStr = tempDate.toGMTString();
+                              var tempStr = tempDate.toUTCString();
                               response[index].created_time = tempStr.substring(0,tempStr.length - 4);
                             }
                             single_result.response = response;
-                            console.log(response);
+                            // console.log(response);
                             $scope.data.results.push(single_result);
                             $scope.$digest();
+
                         });
                         break;
                     case 'c':
@@ -147,10 +148,20 @@ function miscCtrl($scope, Data){
                         single_result.iscomment = true;
                         comment_id="411272562322429";//data.fbid
                         queryComment(comment_id,function(response,post_data){
+                            for (var index = 0; index < response.length; ++index){
+                              var tempDate = new Date(response[index].time*1000);
+                              var tempStr = tempDate.toUTCString();
+                              response[index].time = tempStr.substring(0,tempStr.length - 4);
+                            }
                             single_result.response = response;
-                            console.log(response);
+                            // console.log(response);
+                            for (var index = 0; index < post_data.length; ++index){
+                              var tempDate = new Date(post_data[index].created_time*1000);
+                              var tempStr = tempDate.toUTCString();
+                              post_data[index].created_time = tempStr.substring(0,tempStr.length - 4);
+                            }
                             single_result.post_data = post_data;
-                            console.log(post_data);
+                            // console.log(post_data);
                             post_id = post_data[0].post_id;
                             single_result.post_link = post_link;
                             var post_link = getPostLink(post_id);
