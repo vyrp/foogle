@@ -36,9 +36,10 @@
 }
 
 #alter-logo { /*image dimensions: 488px x 108px;*/
-	position: fixed;
-	margin-left: 3%;
-	width: 11%;
+	position: absolute;
+	height: 50px;
+	margin-top: -6px;
+	margin-left: 20px;
 }
 
 .quasi-center { /*image dimensions: 488px x 108px;*/
@@ -47,12 +48,17 @@
 	width: 56%;
 }
 
+.quasi-left{
+	margin-left: 160px;
+	width: 56%;
+}
+
 #pseudo-dropdown { /*image dimensions: 488px x 108px;*/
-	margin-left: 23%;
+	margin-left: 22%;
 	margin-top: 5px;
 	display: inline-block;
 	max-width: 30%;
-	min-width: 100px;
+	min-width: 140px;
 }
 
 .padded-li {
@@ -66,3 +72,12 @@ ul
     margin:0;
 }
 
+.said-who{
+	color: #00F;
+	text-decoration: underline;
+	padding-right: 20px;
+}
+
+.big{
+	font-size: 25px;
+}
