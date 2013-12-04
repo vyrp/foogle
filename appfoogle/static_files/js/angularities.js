@@ -13,16 +13,11 @@ results:[]
     };
 })
 
+var i=1;
+
 function miscCtrl($scope, Data){
     $scope.data = Data;
-}
 
-function resultsCtrl($scope, Data){
-    $scope.data = Data;
-}
-
-function searchBar($scope, Data){
-    $scope.data = Data;
 
     $scope.searchTypeChange=function(current){
         slaves = document.getElementsByName("slave-checkbox");
@@ -36,12 +31,8 @@ function searchBar($scope, Data){
         }
     }
 
-    $scope.invertDropdown=function(current){
-        $scope.data.dropped = !current;
-    }
-
-
     $scope.search=function(){
+        
         $scope.data.dropped = false;
         if($scope.data.query.length>0 && userLogged){
     
@@ -88,6 +79,7 @@ function searchBar($scope, Data){
 
             console.log("Pesquisa: " + $scope.data.query + " at filter: " + custom_filter);
             console.log(json);
+            
             $.post(
             "/search",
             JSON.stringify(json),
@@ -97,6 +89,7 @@ function searchBar($scope, Data){
                 for(i in data){
                     var single_result = {};
                     data[i].type='m';
+
                     switch(data[i].type){
                     case 'm':
                         //message_id="388551281214203_154007";
@@ -123,6 +116,8 @@ function searchBar($scope, Data){
                             var mess_link = getMessageLink(conversation_id,isgrouptalk);
                             single_result.mess_link = mess_link;
                             // console.log(mess_link);
+                            $scope.data.results.push(single_result);
+                            $scope.$digest();
                         });
 
                         break;
@@ -142,6 +137,9 @@ function searchBar($scope, Data){
                             }
                             single_result.response = response;
                             // console.log(response);
+                            $scope.data.results.push(single_result);
+                            $scope.$digest();
+
                         });
                         break;
                     case 'c':
@@ -167,13 +165,17 @@ function searchBar($scope, Data){
                             post_id = post_data[0].post_id;
                             single_result.post_link = post_link;
                             var post_link = getPostLink(post_id);
-                            single_result.post_link = post_link;
+                            // console.log(post_link);
+                            $scope.data.results.push(single_result);
+                            $scope.$digest();
+
                         });
                         break;
                     }
-                    $scope.data.results.push(single_result);
+                 //   $scope.data.results.push(single_result);
                 }
                 console.log($scope.data.results);
+                console.log("o.O");
             });
             $scope.data.searchscreen = false;
             $scope.data.resultscreen = true;
@@ -181,4 +183,23 @@ function searchBar($scope, Data){
             alert("Please login to use the app.");
         }
   }
+}
+
+function resultsCtrl($scope, Data){
+    $scope.data = Data;
+
+}
+
+function searchBar($scope, Data){
+    
+    $scope.data = Data;
+
+    
+
+    $scope.invertDropdown=function(current){
+        $scope.data.dropped = !current;
+    }
+
+
+    
 }
