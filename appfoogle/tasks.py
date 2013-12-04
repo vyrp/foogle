@@ -161,10 +161,10 @@ def getAllPosts(access_token, user, now, year_ago, important_friends, posts):
     data = flatten([json.loads(answer['body']) for answer in response])
     
     logging.debug("Number of posts: " + str(len(data)))
+
     posts_to_put = []
-    for result_set in data:
-        posts.extend([post for post in data if int(post['updated_time']) > user.last_timestamp and int(post['created_time']) > year_ago])
-        posts_to_put.extend([post for post in data if int(post['created_time']) > user.last_timestamp and int(post['created_time']) > year_ago])
+    posts.extend([post for post in data if (int(post['updated_time']) > user.last_timestamp and int(post['created_time']) > year_ago)])
+    posts_to_put.extend([post for post in data if (int(post['created_time']) > user.last_timestamp and int(post['created_time']) > year_ago)])
 
     if len(posts_to_put) == 0:
         logging.debug('Facebook: no new posts')
@@ -191,7 +191,7 @@ def getAllComments(access_token, user, now, year_ago, posts_ids):
     counter = 0
     
     comments_lists = sorted(flatten(comments_lists), key=lambda comment: int(comment['time']), reverse=True)
-    for sublist in comments_lists:
+    for comment in comments_lists:
         if int(comment['time']) > user.last_timestamp and int(comment['time']) > year_ago:
             sentencePutter.put(comment['text'], user.uid, str(comment['id']), int(comment['time']))
             counter += 1
