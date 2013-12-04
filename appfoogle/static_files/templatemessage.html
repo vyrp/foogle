@@ -13,9 +13,11 @@
     </thead>
     <tbody>
       <tr ng-repeat="phrase in result.response">
-        <td class="username-field"><img class="profile-pic" src={{phrase.pic}} href={{"http://facebook.com/"+phrase.author_id}}></img> <a href={{"http://facebook.com/"+phrase.author_id}}><span>{{phrase.name}}</span></a></td>
+        <td class="username-field">
+          <a href={{"http://facebook.com/"+phrase.author_id}}><img class="profile-pic" src={{phrase.pic}}></img></a> <a href={{"http://facebook.com/"+phrase.author_id}}><span>{{phrase.name}}</span></a>
+        </td>
         <td>{{phrase.body}}</td>
-        <td>{{phrase.created_time}}</td>
+        <td class="said-when">{{phrase.created_time}}</td>
       </tr>
     </tbody>
   </table>
