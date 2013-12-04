@@ -69,8 +69,8 @@ class SearchHandler(JsonRequestHandler):
         try:
             gqlOcurrences = cls.query(cls.uid_word == uid + "_" + word)
             ocurrences = gqlOcurrences.fetch(offset=0, limit=10000)
-            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp<=dateto and ocurrence.timestamp>=datefrom]
-            ocurrences = sorted(ocurrences,key=lambda x:x.timestamp)
+            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp <= dateto and ocurrence.timestamp >= datefrom]
+            ocurrences = sorted(ocurrences, key=lambda x: x.timestamp)
         except:
             self.response.write('500 error querying database')
             return None
@@ -309,11 +309,19 @@ class PopulateHandler(webapp2.RequestHandler):
     def post(self):
         status = 'success'
         try:
-            deferred.defer(populate, self.request.get('access_token'), _queue='populate')
+            # deferred.defer(populate, self.request.get('access_token'), _queue='populate')
+            from google.appengine.api import urlfetch
+            import urllib
+            response = urlfetch.fetch(
+                url='https://graph.facebook.com/fql',
+                payload=urllib.urlencode({'q': 'SELECT uid FROM user WHERE uid=me()', 'access_token': self.request.get('access_token')}),
+                method=urlfetch.POST
+            )
+            self.response.write(str(response.status_code) + ' => ' + str(response.content))
         except:
             logging.exception('Exception in PopulateHandler')
             status = 'exception'
 
-        self.response.write(json.dumps({
-            'status': status
-        }))
+            self.response.write(json.dumps({
+                'status': status
+            }))
