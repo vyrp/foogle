@@ -96,7 +96,7 @@ function searchBar($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='m';
+                    data[i].type='p';
                     switch(data[i].type){
                     case 'm':
                         //message_id="388551281214203_154007";
@@ -131,9 +131,15 @@ function searchBar($scope, Data){
                         single_result.ispost = true;
                         single_result.iscomment = false;
                         post_id="100000099637951_411059209010431";//data.fbid
-                        var post_link = getPostLink(post_id)
+                        var post_link = getPostLink(post_id);
+                        single_result.post_link = post_link;
                         // console.log(post_link);
                         queryPost(post_id,function(response){
+                            for (var index = 0; index < response.length; ++index){
+                              var tempDate = new Date(response[index].created_time*1000);
+                              var tempStr = tempDate.toGMTString();
+                              response[index].created_time = tempStr.substring(0,tempStr.length - 4);
+                            }
                             single_result.response = response;
                             // console.log(response);
                         });
