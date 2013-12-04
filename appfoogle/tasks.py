@@ -56,12 +56,43 @@ def FQL_multi(access_token, queries):
         raise FacebookError('Facebook FQL Error: ' + str(response.status_code) + ' (' + str(queries) + ')')
 
 
+def FQL_batch(access_token, queries):
+    params = {
+        'access_token': access_token,
+        'batch': [{
+            'method': 'POST',
+            'relative_url': 'method/fql.query?' + urllib.urlencode({'query': query})
+        } for query in queries]
+    }
+    response = urlfetch.fetch(url='https://graph.facebook.com', payload=urllib.urlencode(params), method=urlfetch.POST)
+    if response.status_code == 200:
+        response = json.loads(response.content)
+        return response
+    else:
+        raise FacebookError('Facebook FQL Error: ' + str(response.status_code))
+ 
+ 
+def flatten(multilist):
+    result = []
+    for sublist in multilist:
+        result.extend(sublist)
+    return result
+
+
+def bundle(flat_list, max_size):
+    N = len(flat_list) / max_size
+    multilist = [flat_list[i * max_size: (i + 1) * max_size] for i in xrange(0, N)]
+    if flat_list[N * max_size:]:
+        multilist.append(flat_list[N * max_size:])
+    return multilist
+    
+
 def getAllMessages(access_token, user, now, year_ago, important_friends):
     queries = {
         'threads0': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 0',
-        'threads50': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 50',
-        'threads100': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 100',
-        'threads150': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 150'
+        # 'threads50': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 50',
+        # 'threads100': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 100',
+        # 'threads150': 'SELECT thread_id, updated_time, message_count, recipients FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 150'
     }
     response = FQL_multi(access_token, queries)
 
@@ -91,13 +122,17 @@ def getAllMessages(access_token, user, now, year_ago, important_friends):
     _counter = 0
     while len(active_threads) > 0 and _counter < 4:
         logging.debug("Active threads: " + str(len(active_threads)))
-        response = FQL('SELECT body, message_id, thread_id, created_time FROM message WHERE thread_id IN (' + str(map(str, active_threads))[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 6000 OFFSET ' + str(offset), access_token)
-        data = response['data']
-        for msg in data:
+        
+        queries = ['SELECT body, message_id, thread_id, created_time FROM message WHERE thread_id IN (' + str(small_list)[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 6000 OFFSET ' + str(offset) for small_list in bundle(map(str, active_threads), 20)]
+        response = FQL_batch(access_token, queries)
+        
+        messages = flatten([json.loads(answer['body']) for answer in response])
+        logging.debug("Number of messages: " + str(len(messages)))
+        for msg in messages:
             threads[str(msg['thread_id'])] += 1
             sentencePutter.put(msg['body'], user.uid, str(msg['message_id']), int(msg['created_time']))
         
-        if data[0]['created_time'] < year_ago:
+        if messages[0]['created_time'] < year_ago:
             break
         
         offset += 30
@@ -110,44 +145,62 @@ def getAllMessages(access_token, user, now, year_ago, important_friends):
 def getAllPosts(access_token, user, now, year_ago, important_friends, posts):
     response = FQL('SELECT gid FROM group_member WHERE uid=me()', access_token)
     groups = [str(item['gid']) for item in response['data']]
+    logging.debug("Number of groups: " + str(len(groups)))
     
-    important_friends = str(important_friends.union(groups))[5:-2]
-    logging.debug('Facebook best friends + groups: ' + important_friends)
+    queries = [
+        'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(important_friends)[5:-2] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 0',
+        # 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(important_friends)[5:-2] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 100',
+        # 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(important_friends)[5:-2] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 200',
+        # 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(important_friends)[5:-2] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 300',
+        'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(groups)[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 0',
+        # 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(groups)[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 100',
+        # 'g_posts200': 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(groups)[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 200',
+        # 'g_posts300': 'SELECT post_id, message, created_time, updated_time FROM stream WHERE source_id IN (' + str(groups)[1:-1] + ') AND created_time < ' + str(now) + ' ORDER BY created_time DESC LIMIT 100 OFFSET 300',
+    ]
+    response = FQL_batch(access_token, queries)
+    data = flatten([json.loads(answer['body']) for answer in response])
     
-    queries = {
-        'posts0': 'SELECT post_id, message, created_time FROM stream WHERE source_id IN (' + important_friends + ') ORDER BY created_time DESC LIMIT 100 OFFSET 0',
-        'posts100': 'SELECT post_id, message, created_time FROM stream WHERE source_id IN (' + important_friends + ') ORDER BY created_time DESC LIMIT 100 OFFSET 100',
-        'posts200': 'SELECT post_id, message, created_time FROM stream WHERE source_id IN (' + important_friends + ') ORDER BY created_time DESC LIMIT 100 OFFSET 200',
-        'posts300': 'SELECT post_id, message, created_time FROM stream WHERE source_id IN (' + important_friends + ') ORDER BY created_time DESC LIMIT 100 OFFSET 300',
-    }
-    response = FQL_multi(access_token, queries)
-    
-    for result_set in response['data']:
-        posts.extend([post for post in result_set['fql_result_set'] if int(post['created_time']) > user.last_timestamp])
+    logging.debug("Number of posts: " + str(len(data)))
+    posts_to_put = []
+    for result_set in data:
+        posts.extend([post for post in data if int(post['updated_time']) > user.last_timestamp and int(post['created_time']) > year_ago])
+        posts_to_put.extend([post for post in data if int(post['created_time']) > user.last_timestamp and int(post['created_time']) > year_ago])
 
-    if len(posts) == 0:
+    if len(posts_to_put) == 0:
         logging.debug('Facebook: no new posts')
         return
 
     sentencePutter = SentencePutter(models.Posts)
-    for post in posts:
-        sentencePutter.put(post['message'], user.uid, str(post['post_id']), int(msg['created_time']))
+    for post in posts_to_put:
+        sentencePutter.put(post['message'], user.uid, str(post['post_id']), int(post['created_time']))
     sentencePutter.flush()
     
     
 def getAllComments(access_token, user, now, year_ago, posts_ids):
     logging.debug('Beginning getAllComments')
 
-    response = FQL('SELECT comments FROM stream WHERE post_id IN (' + str(map(str, posts_ids))[1:-1] + ')')
-    comments_lists = [comments['comments']['comment_list'] for comments in response['data']]
+    logging.debug("Number of posts with new comments: " + str(len(posts_ids)))
+    
+    response = FQL_batch(access_token, ['SELECT comments FROM stream WHERE post_id IN (' + str(small_list)[1:-1] + ')' for small_list in bundle(posts_ids, 20)])
+    data = flatten([json.loads(answer['body']) for answer in response])
+    
+    logging.debug("Number of comments: " + str(len(data)))
+    
+    comments_lists = [comments['comments']['comment_list'] for comments in data]
     sentencePutter = SentencePutter(models.Comments)
+    counter = 0
+    
+    comments_lists = sorted(flatten(comments_lists), key=lambda comment: int(comment['time']), reverse=True)
     for sublist in comments_lists:
-        for comment in sublist:
-            if int(comment['time']) > user.last_timestamp:
-                sentencePutter.put(comment['text'], user.uid, str(comment['id']), int(comment['time']))
+        if int(comment['time']) > user.last_timestamp and int(comment['time']) > year_ago:
+            sentencePutter.put(comment['text'], user.uid, str(comment['id']), int(comment['time']))
+            counter += 1
+    
+    logging.debug("Number of putted comments: " + str(counter))
 
 
 def populate(access_token):
+    start = time.clock()
     logging.debug('<<<<<< Deferred: populate')
 
     response = FQL('SELECT uid FROM user WHERE uid=me()', access_token)
@@ -168,7 +221,7 @@ def populate(access_token):
         getAllMessages(access_token, user, now, year_ago, important_friends)
         posts = []
         getAllPosts(access_token, user, now, year_ago, set(important_friends), posts)
-        getAllComments(access_token, user, now, year_ago, [post['post_id'] for post in posts])
+        getAllComments(access_token, user, now, year_ago, [str(post['post_id']) for post in posts])
 
     except FacebookError as e:
         logging.exception('Facebook Error ocurred.')
@@ -177,7 +230,7 @@ def populate(access_token):
         logging.exception('Task => Time Limit Exceeded')
 
     except Exception as e:
-        logging.exception(e)
+        logging.exception('Some error ocurred...')
 
     finally:
         user.is_populating = False
@@ -185,3 +238,5 @@ def populate(access_token):
         user.put()
 
         logging.debug('Populate >>>>>>')
+        delta = time.clock() - start
+        logging.debug('TIME = ' + str(delta) + 's = ' + str(delta/60) + 'min')

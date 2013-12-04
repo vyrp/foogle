@@ -309,15 +309,7 @@ class PopulateHandler(webapp2.RequestHandler):
     def post(self):
         status = 'success'
         try:
-            # deferred.defer(populate, self.request.get('access_token'), _queue='populate')
-            from google.appengine.api import urlfetch
-            import urllib
-            response = urlfetch.fetch(
-                url='https://graph.facebook.com/fql',
-                payload=urllib.urlencode({'q': 'SELECT uid FROM user WHERE uid=me()', 'access_token': self.request.get('access_token')}),
-                method=urlfetch.POST
-            )
-            self.response.write(str(response.status_code) + ' => ' + str(response.content))
+            deferred.defer(populate, self.request.get('access_token'), _queue='populate')
         except:
             logging.exception('Exception in PopulateHandler')
             status = 'exception'
