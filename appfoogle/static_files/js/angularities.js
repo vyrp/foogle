@@ -90,7 +90,7 @@ function miscCtrl($scope, Data){
                 for(i in data){
                     $scope.data.loading=true;
                     var single_result = {};
-                    data[i].type='p';
+                    //data[i].type='p';
 
                     switch(data[i].type){
                     case 'm':
@@ -100,8 +100,11 @@ function miscCtrl($scope, Data){
                         single_result.ispost = false;
                         single_result.iscomment = false;
 
-                        message_id="466050320176931_168";//data.fbid
-                        timestamp="1385963939";//data.timestamp
+                        //message_id="466050320176931_168";//data.fbid
+                        //timestamp="1385963939";//data.timestamp
+                        message_id = data[i].fbid;
+                        timestamp = data[i].timestamp;
+                        
                         delta=1000;
                         queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
                             for (var index = 0; index < response.length; ++index){
@@ -128,7 +131,8 @@ function miscCtrl($scope, Data){
                         single_result.ismessage = false;
                         single_result.ispost = true;
                         single_result.iscomment = false;
-                        post_id="100000099637951_411059209010431";//data.fbid
+                        //post_id="100000099637951_411059209010431";//data.fbid
+                        post_id = data[i].fbid;
                         var post_link = getPostLink(post_id);
                         single_result.post_link = post_link;
                         // console.log(post_link);
@@ -150,7 +154,10 @@ function miscCtrl($scope, Data){
                         single_result.ismessage = false;
                         single_result.ispost = false;
                         single_result.iscomment = true;
-                        comment_id="411272562322429";//data.fbid
+                        //comment_id="411272562322429";//data.fbid
+                        
+                        comment_id = data[i].fbid;
+                        
                         queryComment(comment_id,function(response,post_data){
                             for (var index = 0; index < response.length; ++index){
                               var tempDate = new Date(response[index].time*1000);

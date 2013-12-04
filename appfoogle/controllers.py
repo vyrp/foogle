@@ -262,9 +262,11 @@ class GetFromAllHandler(MultiSearchHandler):
         except:
             self.fbError()
             return
-        uid = "1"
         results = []
         filt = 'cmp'
+        
+        logging.debug('Access token: ' + access_token)
+        
         if 'filter' in body:
             filt = body['filter']
         if 'p' in filt:
