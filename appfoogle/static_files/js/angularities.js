@@ -89,7 +89,7 @@ function miscCtrl($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='c';
+                    data[i].type='p';
 
                     switch(data[i].type){
                     case 'm':
