@@ -68,8 +68,8 @@ def populate(access_token):
 
     try:
         queries = {
-            'threads0':   'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 0',
-            'threads50':  'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 50',
+            'threads0': 'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 0',
+            'threads50': 'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 50',
             'threads100': 'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 100',
             'threads150': 'SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 5 OFFSET 150'
         }
@@ -86,12 +86,10 @@ def populate(access_token):
         while len(active_threads) > 0:
             logging.debug("Active threads: " + str(active_threads))
             response = FQL('SELECT body, message_id, thread_id FROM message WHERE thread_id IN (' + str(map(str, active_threads))[1:-1] + ') ORDER BY created_time DESC LIMIT 600 OFFSET ' + str(offset), access_token)
-            logging.debug("Facebook response [msgs]:\n" + str(response))
             data = response['data']
             for msg in data:
                 threads[msg['thread_id']] += 1
             
-            logging.debug("Threads: " + str(threads))
             offset += 30
             active_threads = [thread_id for thread_id in threads.keys() if threads[thread_id] >= offset]
         
