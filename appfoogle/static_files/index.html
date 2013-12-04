@@ -4,6 +4,7 @@
   <title>Foogle App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="static_files/css/bootstrap.min.css" />
+  <link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
   <link rel="stylesheet" type="text/css" href="static_files/css/stylesheet.css" />
 
@@ -12,7 +13,7 @@
 
   <!-- The Navbar -->
 
-  <div class="navbar navbar-inv" role="navigation">
+  <div class="navbar" role="navigation">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -25,9 +26,9 @@
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li class="active"><a href="#search" data-toggle="tab">Search</a></li>
+          <li><a href="#about" data-toggle="tab">About</a></li>
+          <li><a href="#contact" data-toggle="tab">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li id="fb-button-li"><fb:login-button autologoutlink="true" show-faces="false" perms="read_mailbox read_insights read_stream user_likes"></fb:login-button></li>
@@ -36,38 +37,63 @@
     </div><!-- /.container -->
   </div><!-- /.navbar -->
 
-  <!-- The Searching Screen -->
-  <div id="front-main" ng-controller="searchCtrl" ng-show=data.searchscreen>
+  <div class="tab-content">
+    <div id="search" class="tab-pane fade in active">
+    <!-- The Searching Screen -->
+      <div id="front-main" ng-controller="searchCtrl" ng-show=data.searchscreen>
 
-    <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
+        <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
 
-    <searchbar cssclasszero="quasi-center" cssclassone="main-dropdown" count="1"></searchbar>
-  </div>
-
-  <!-- The Results Screen -->
-
-  <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
-    <div id="front-main" ng-controller="searchCtrl" >
-      <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
-    
-      <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
-    <div/>
-    <hr/>
-
-    <div ng-repeat="result in data.results">
-      <div ng-if=result.ismessage>
-        <messageresult></messageresult>
+        <searchbar cssclasszero="quasi-center" cssclassone="main-dropdown" count="1"></searchbar>
       </div>
-      <div ng-if=result.ispost>
-        <postresult></postresult>
-      </div>
-      <div ng-if=result.iscomment>
-        <commentresult></commentresult>
+
+      <!-- The Results Screen -->
+
+      <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
+        <div id="front-main" ng-controller="searchCtrl" >
+          <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
+          <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
+        </div>
+        <hr/>
+
+        <div ng-repeat="result in data.results">
+          <div ng-if=result.ismessage>
+            <messageresult></messageresult>
+          </div>
+          <div ng-if=result.ispost>
+            <postresult></postresult>
+          </div>
+          <div ng-if=result.iscomment>
+            <commentresult></commentresult>
+          </div>
+        </div>
+        <div id="loading" class="screen-center" ng-show=data.loading></div>
       </div>
     </div>
-    <div id="loading" class="screen-center" ng-show=data.loading></div>
-
-
+    <div id="about" class="tab-pane fade">
+      <div class="well quasi-center" id="about-exp">
+        <h1><span class="glyphicon glyphicon-search"></span> Foogle Search</h1>
+        <p>Ever wanted to look for something inside <strong>Facebook</strong>, just like a <strong>Google</strong> search? Now you can!<br />
+        Foogle is an awesome new technology that lets you search words <strong>efficiently</strong> among the stuff you can see on your facebook.
+        In this version, you can already <strong>search on your messages</strong>, the <strong>posts</strong> you can see and the 
+        <strong>comments</strong> in them...<br />
+        How good does it work? The only way to really know is to Try It Out!</p>
+      </div>
+    </div>
+    <div id="contact" class="tab-pane fade">
+      <div>
+        <h1 id="glorious">All hail the glorious programmers!</h1>
+        <div class="faces face-left">
+          <a href="https://www.facebook.com/luizfilipe.martinsramos"><img src="/static_files/images/harry.png" class="contact-pic"><img></a>
+        </div>
+        <div class="faces face-center">
+         <a href="http://facebook.com/marrciovr"><img src="/static_files/images/cubo.png" class="contact-pic"><img></a>
+        </div>
+        <div class="faces face-right">
+          <a href="http://facebook.com/felipeyannik"><img src="/static_files/images/croata.png" class="contact-pic"><img></a>
+        </div>
+      </div>
+    </div>
   </div>
   <div id="fb-root"></div>
 

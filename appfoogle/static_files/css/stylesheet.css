@@ -6,9 +6,13 @@
 	background-color:#3F6AB5;
 }
 
-.navbar-inv {
+.navbar {
   background-color: #FFF; /* background color will be white for all browsers */
   border-color:#00F;
+}
+
+li.active {
+	background-color:#EEF;
 }
 
 #datepicker1 {
@@ -110,4 +114,34 @@ td{
 .profile-pic{
 	width: 40px;
 	padding-left: 3px;
+}
+
+#about-exp{
+	display: inline-block;
+	margin-top: 10%;
+}
+
+.contact-pic{
+	width: 13%;
+}
+
+#glorious{
+	font-family: 'Press Start 2P', 'Helvetica Neue', Helvetica, Arial, serif;
+	text-align: center;
+}
+
+.faces{
+	width: 100%;
+	position: absolute;
+	margin-top: 10%;
+}
+
+.face-left{
+	margin-left: 20%;
+}
+.face-center{
+	margin-left: 43.5%;
+}
+.face-right{
+	margin-left: 67%;
 }
