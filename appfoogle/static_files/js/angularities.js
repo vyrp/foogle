@@ -90,7 +90,7 @@ function miscCtrl($scope, Data){
                 for(i in data){
                     $scope.data.loading=true;
                     var single_result = {};
-                    data[i].type='p';
+                    data[i].type='m';
 
                     switch(data[i].type){
                     case 'm':
@@ -103,7 +103,11 @@ function miscCtrl($scope, Data){
                         message_id="466050320176931_168";//data.fbid
                         timestamp="1385963939";//data.timestamp
                         delta=1000;
-                        queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
+                        queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk,user){
+                            console.log("OLA");
+                            if(user)console.log(user);
+                            console.log("\\USER")
+                            console.log(response)
                             for (var index = 0; index < response.length; ++index){
                               var tempDate = new Date(response[index].created_time*1000);
                               var tempStr = tempDate.toUTCString();
