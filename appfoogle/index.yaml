@@ -14,12 +14,6 @@ indexes:
   properties:
   - name: uid
   - name: word
-  - name: fbid
-
-- kind: Comments
-  properties:
-  - name: uid
-  - name: word
   - name: timestamp
 
 - kind: Messages
