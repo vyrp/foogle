@@ -9,6 +9,7 @@ alloptions: true,
 posts: true,
 comments: true,
 chat:true,
+loading:true,
 results:[]
     };
 })
@@ -35,7 +36,7 @@ function miscCtrl($scope, Data){
         
         $scope.data.dropped = false;
         if($scope.data.query.length>0 && userLogged){
-    
+            $scope.data.loading = true;
             $scope.data.results = [];
             var authResponse = FB.getAuthResponse();
             if(authResponse == undefined){
@@ -117,6 +118,7 @@ function miscCtrl($scope, Data){
                             single_result.mess_link = mess_link;
                             // console.log(mess_link);
                             $scope.data.results.push(single_result);
+                            $scope.data.loading = false;
                             $scope.$digest();
                         });
 
@@ -138,6 +140,7 @@ function miscCtrl($scope, Data){
                             single_result.response = response;
                             // console.log(response);
                             $scope.data.results.push(single_result);
+                            $scope.data.loading = false;
                             $scope.$digest();
 
                         });
@@ -167,6 +170,7 @@ function miscCtrl($scope, Data){
                             single_result.post_link = post_link;
                             // console.log(post_link);
                             $scope.data.results.push(single_result);
+                            $scope.data.loading = false;
                             $scope.$digest();
 
                         });

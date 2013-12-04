@@ -37,7 +37,6 @@
   </div><!-- /.navbar -->
 
   <!-- The Searching Screen -->
-
   <div id="front-main" ng-controller="searchCtrl" ng-show=data.searchscreen>
 
     <img src="static_files/images/FoogleMain.png" id="main-logo" alt="foogle"/>
@@ -54,6 +53,7 @@
       <searchbar cssclasszero="quasi-left" cssclassone="sub-dropdown" count="2"></searchbar>
     <div/>
     <hr/>
+    <div id="loading" class="screen-center" ng-show=data.loading></div>
 
     <div ng-repeat="result in data.results">
       
@@ -82,9 +82,31 @@
   <script src="//connect.facebook.net/en_US/all.js"></script>
   <script src="static_files/js/facebookLogin.js"></script>
   <script src="static_files/js/utils.js"></script>
+  <script src="static_files/js/spin.min.js"></script>
+  
 
   <script>
   $(function() {
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 32, // The length of each line
+      width: 6, // The line thickness
+      radius: 25, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      color: '#000', // #rgb or #rrggbb or array of colors
+      speed: 1.2, // Rounds per second
+      trail: 38, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: 'auto', // Top position relative to parent in px
+      left: 'auto' // Left position relative to parent in px
+    };
+    var target = document.getElementById('loading');
+    var spinner = new Spinner(opts).spin(target);
     $.datepicker.regional['pt-BR'] = {
       dateFormat: 'dd/mm/yy'
     };

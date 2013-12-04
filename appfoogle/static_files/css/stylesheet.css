@@ -48,6 +48,12 @@
 	width: 56%;
 }
 
+.screen-center{
+	margin-left: 50%;
+	margin-right: 50%;
+	margin-top:200px;
+}
+
 .quasi-left{
 	margin-left: 160px;
 	width: 56%;
