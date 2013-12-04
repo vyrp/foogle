@@ -49,10 +49,15 @@
   <!-- The Results Screen -->
 
   <div id="results-main" ng-controller="resultsCtrl" ng-show=data.resultscreen>
-    <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
-    <searchbar cssclass="quasi-left"></searchbar>
+    <div id="front-main" ng-controller="searchBar" >
+      <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
+    
+      <searchbar cssclass="quasi-left"></searchbar>
+    <div/>
     <hr/>
+
     <div ng-repeat="result in data.results">
+      
       <div ng-if=result.ismessage>
         <messageresult></messageresult>
       </div>
