@@ -71,6 +71,7 @@ function searchBar($scope, Data){
                 "filter": custom_filter
             };
 
+
             if($scope.data.from != undefined){
                 timestamp = getTimestamp($scope.data.from);
                 if(timestamp != NaN){

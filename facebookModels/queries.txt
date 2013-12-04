@@ -1,38 +1,39 @@
 /* Descrição: Pega todas as mensagens de todos os chats do usuário
  * Detalhes:
  *   - LIMIT de thread: 50
- *   - LIMIT de message: 50
+ *   - LIMIT de message: 30 por thread
  */
-SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC
+SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 150) ORDER BY created_time DESC
 
 
 /* Descrição: Pega todos os posts da linha do tempo do usuário
  * Detalhes:
- *   - LIMIT de stream: ?
+ *   - LIMIT de stream: todos meus 399
  */
 SELECT post_id, message FROM stream WHERE source_id=me() ORDER BY created_time DESC
 
 
 /* Descrição: Pega todos os posts de todos os grupos dos quais o usuário pertence
  * Detalhes:
- *   - LIMIT de group_member: ?
- *   - LIMIT de stream: ?
+ *   - LIMIT de group_member: todos os meus 20
+ *   - LIMIT de stream: todos os meus 781
  */
 SELECT post_id, message FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me()) ORDER BY created_time DESC
 
 
 /* Descrição: Pega todos os comentários de todos os posts de todos os grupos dos quais o usuário pertence
  * Detalhes:
- *   - LIMIT de group_member: ?
- *   - LIMIT de stream: ?
- *   - LIMIT de comment: ?
+ *   - LIMIT de group_member: todos os meus 20
+ *   - LIMIT de stream: todos os meus 781
+ *   - LIMIT de comment: todos
  */
 SELECT text, id FROM comment WHERE post_id IN (SELECT post_id FROM stream WHERE source_id IN (SELECT gid FROM group_member WHERE uid=me())) ORDER BY time DESC
+SELECT comments FROM stream WHERE post_id = "..."
 
 
 /* Descrição: Pega todos os posts do newsfeed do usuário
  * Detalhes:
- *   - LIMIT de stream_filter: ?
- *   - LIMIT de stream: ?
+ *   - LIMIT de stream_filter: nao importa... ele retorna "nf"
+ *   - LIMIT de stream: 400
  */
 SELECT post_id, message FROM stream WHERE filter_key IN(SELECT filter_key FROM stream_filter WHERE type = 'newsfeed' AND uid=me()) AND is_hidden=0 ORDER BY created_time DESC

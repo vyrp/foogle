@@ -2,33 +2,27 @@ from google.appengine.ext import ndb
 
 
 class Comments(ndb.Model):
-    uid = ndb.StringProperty()
-    fbid = ndb.StringProperty()
-    word = ndb.StringProperty()
-    timestamp = ndb.IntegerProperty()
+    uid_word = ndb.StringProperty(required=True)
+    fbid = ndb.StringProperty(required=True, indexed=False)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class Posts(ndb.Model):
-    uid = ndb.StringProperty()
-    fbid = ndb.StringProperty()
-    word = ndb.StringProperty()
-    timestamp = ndb.IntegerProperty()
+    uid_word = ndb.StringProperty(required=True)
+    fbid = ndb.StringProperty(required=True, indexed=False)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class Messages(ndb.Model):
-    uid = ndb.StringProperty()
-    fbid = ndb.StringProperty()
-    word = ndb.StringProperty()
-    timestamp = ndb.IntegerProperty()
+    uid_word = ndb.StringProperty(required=True)
+    fbid = ndb.StringProperty(required=True, indexed=False)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class User(ndb.Model):
     uid = ndb.StringProperty(required=True)
-    access_token = ndb.StringProperty()
-    msg_ts = ndb.IntegerProperty()
-    pst_ts = ndb.IntegerProperty()
-    cmt_ts = ndb.IntegerProperty()
-    is_populating = ndb.BooleanProperty(default=False)
+    last_timestamp = ndb.IntegerProperty(default=0, indexed=False)
+    is_populating = ndb.BooleanProperty(default=False, indexed=False)
 
     @classmethod
     def find_or_create(cls, uid):

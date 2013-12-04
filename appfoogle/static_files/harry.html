@@ -29,12 +29,16 @@
             access_token=authResponse.accessToken;
             $.post('putcomment', JSON.stringify({
                     "uid":"1",
-                    "sentence":"por como as com em vai the a ",
+                    "sentence":"por como as com em vai the a harry lindao muitdsfo legal veja",
+                    "sentence1":"por como as com em saddsavai the a harsdfsdfry lsdfsdfindao muito legal veja",
+                    "sentence2":"por como as com em vai the a harry lindao muito legaldfdfdsfsd vsdfsdeja",
+                    "sentence3":"pors csodsamo aassd com em vai the a harry lindao muito legal veja",
                     "filter":"cmp",
                     "fbid":"140",
                     "word":"vai",
                     "from":1,
                     "to":20,
+                    "timestamp":10,
                     "access_token":authResponse.accessToken
                     }), function(response){
                       console.log(response);

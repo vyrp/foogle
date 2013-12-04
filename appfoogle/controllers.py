@@ -4,9 +4,11 @@ import json
 import logging
 import re
 import webapp2
+from google.appengine.ext import deferred
 from models import *
 from preprocess import preprocess
-from tasks import start_populate_task, FQL
+from tasks import populate, FQL
+from puthandlers import SentencePutter
 
 
 class JsonRequestHandler(webapp2.RequestHandler):
@@ -65,17 +67,14 @@ class SearchHandler(JsonRequestHandler):
 
     def queryOcurrences(self, uid, word, offset, limit, cls, datefrom, dateto):
         try:
-            gqlOcurrences = cls.query(
-                ndb.AND(
-                    ndb.AND(cls.uid == uid, cls.word == word),
-                    ndb.AND(cls.timestamp <= dateto, cls.timestamp >= datefrom)
-                )
-            ).order(cls.timestamp)
-            ocurrences = gqlOcurrences.fetch(offset=offset, limit=limit)
+            gqlOcurrences = cls.query(cls.uid_word == uid + "_" + word)
+            ocurrences = gqlOcurrences.fetch(offset=0, limit=10000)
+            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp<=dateto and ocurrence.timestamp>=datefrom]
+            ocurrences = sorted(ocurrences,key=lambda x:x.timestamp)
         except:
             self.response.write('500 error querying database')
             return None
-        return ocurrences
+        return ocurrences[offset:offset + limit]
 
     def processOcurrences(self, ocurrences):
         fbids = [0] * len(ocurrences)
@@ -118,8 +117,15 @@ class PutCommentHandler(webapp2.RequestHandler):
         except:
             self.response.write('400 invalid json in request body')
             return
-        comment = Comments(uid=body['uid'], fbid=body['fbid'], word=body['word'], timestamp=1)
-        comment.put()
+        sp = SentencePutter(Comments)
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence1'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence2'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.flush()
         response = {'status': 'success'}
         self.response.write(json.dumps(response))
 
@@ -198,7 +204,7 @@ class MultiSearchHandler(SearchHandler):
 
         sortedKeys = sorted(allOcurrences, key=allOcurrences.get, reverse=True)
 
-        fbids = [{}] * len(sortedKeys)  # Possivel fonte de BUG!!!!
+        fbids = [0] * len(sortedKeys)
 
         for i, key in enumerate(sortedKeys):
             fbids[i] = self.getObjectFromHash(key)
@@ -302,33 +308,9 @@ class DummyCreateTimestamps(webapp2.RequestHandler):
 class PopulateHandler(webapp2.RequestHandler):
     def post(self):
         status = 'success'
-
         try:
-            access_token = self.request.get('access_token')
-            response = FQL('SELECT uid FROM user WHERE uid=me()', access_token)
-
-            if 'data' in response:
-                uid = response['data'][0]['uid']
-                user = User.find_or_create(str(uid))
-                user.access_token = access_token
-                user.put()
-                # start_populate_task(uid, access_token)
-
-                # Begin test
-                response = FQL('SELECT thread_id FROM thread WHERE folder_id=0 LIMIT 100', access_token)
-                if 'data' in response:
-                    status += ' :: ' + str(len(response['data']))
-                else:
-                    status += ' :: None'
-                # End test
-            elif 'error' in response:
-                logging.error('Facebook error: ' + str(response['error']))
-                status = 'fb error'
-            else:
-                logging.error('Facebook unknown error: ' + str(response))
-                status = 'fb error'
-
-        except Exception as e:
+            deferred.defer(populate, self.request.get('access_token'), _queue='populate')
+        except:
             logging.exception('Exception in PopulateHandler')
             status = 'exception'
 
