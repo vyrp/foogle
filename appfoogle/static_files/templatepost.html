@@ -1,1 +1,16 @@
-<h1>POST STUB</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a class="big panel-title" href={{result.post_link}}>Post on {{result.response[0].created_time}}</a>
+  </div>
+  
+  <table>
+    <tbody>
+      <tr>
+        <td class="said-who"><a href={{"http://facebook.com/"+result.response[0].actor_id}}>{{result.response[0].actor_id}}:</a></td>
+        <td class="said-what">{{result.response[0].message}}</td>
+        <td style="padding-right=10px;">{{result.response[0].like_info.like_count}}<span class="glyphicon glyphicon-thumbs-up"></span></td>
+        <td>{{result.response[0].share_info.share_count}}<span class="glyphicon glyphicon-share"></span><td>
+      </tr>
+    </tbody>
+  </table>
+</div>
