@@ -3,7 +3,9 @@ foogleApp.directive("searchbar", function(){
     restrict: "E",
     templateUrl: "/searchbar.html",
     link: function(scope, element,attrs){
-      element.children(0).addClass(attrs.cssclass);
+      element.children().addClass(attrs.cssclasszero);
+      element.children().next().removeClass(attrs.cssclasszero);
+      element.children().next().addClass(attrs.cssclassone);
     }
   }
 });

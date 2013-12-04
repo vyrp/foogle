@@ -57,10 +57,16 @@
 	margin-left: 10px;
 }
 
-#pseudo-dropdown { /*image dimensions: 488px x 108px;*/
+.main-dropdown {
 	margin-left: 22%;
 	margin-top: 5px;
 	display: inline-block;
+	max-width: 173px;
+	min-width: 140px;
+}
+
+.sub-dropdown {
+	margin-left: 160px;
 	max-width: 173px;
 	min-width: 140px;
 }
@@ -94,6 +100,6 @@ td{
 }
 
 .profile-pic{
-	height: 40px;
+	width: 40px;
 	padding-left: 3px;
 }

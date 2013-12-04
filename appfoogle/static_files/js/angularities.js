@@ -88,7 +88,7 @@ function miscCtrl($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='m';
+                    data[i].type='c';
 
                     switch(data[i].type){
                     case 'm':
@@ -163,8 +163,8 @@ function miscCtrl($scope, Data){
                             single_result.post_data = post_data;
                             // console.log(post_data);
                             post_id = post_data[0].post_id;
-                            single_result.post_link = post_link;
                             var post_link = getPostLink(post_id);
+                            single_result.post_link = post_link;
                             // console.log(post_link);
                             $scope.data.results.push(single_result);
                             $scope.$digest();
@@ -174,7 +174,7 @@ function miscCtrl($scope, Data){
                     }
                  //   $scope.data.results.push(single_result);
                 }
-                console.log($scope.data.results);
+                // console.log($scope.data.results);
                 console.log("o.O");
             });
             $scope.data.searchscreen = false;
