@@ -16,6 +16,25 @@ results:[]
 
 var i=1;
 
+
+function updateNewSearch($scope){
+    $scope.$digest();
+    window.setTimeout(function(){
+        console.log("NOVA SEARCH BAR");
+         $( "#datepicker21" ).datepicker(
+        {
+          onSelect: function(dateText, inst){
+            $("#datepicker22").datepicker("option", "minDate", $.datepicker.parseDate("dd/mm/yy", dateText));
+          }
+        });
+        $( "#datepicker22" ).datepicker();
+
+        $( "#datepicker22" ).datepicker('setDate', $.datepicker.parseDate("dd/mm/yy", $("#datepicker12").val()));
+        $( "#datepicker21" ).datepicker('setDate', $.datepicker.parseDate("dd/mm/yy", $("#datepicker11").val()));
+
+    },100);
+}
+
 function miscCtrl($scope, Data){
     $scope.data = Data;
     $scope.count = 0;
@@ -124,7 +143,7 @@ function miscCtrl($scope, Data){
                             // console.log(mess_link);
                             $scope.data.results.push(single_result);
                             $scope.data.loading = false;
-                            $scope.$digest();
+                            updateNewSearch($scope)
                         });
 
                         break;
@@ -146,7 +165,7 @@ function miscCtrl($scope, Data){
                             // console.log(response);
                             $scope.data.results.push(single_result);
                             $scope.data.loading = false;
-                            $scope.$digest();
+                            updateNewSearch($scope)
 
                         });
                         break;
@@ -176,7 +195,7 @@ function miscCtrl($scope, Data){
                             // console.log(post_link);
                             $scope.data.results.push(single_result);
                             $scope.data.loading = false;
-                            $scope.$digest();
+                            updateNewSearch($scope)
                         });
                         break;
                     }
