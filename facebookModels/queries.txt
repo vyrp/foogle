@@ -3,7 +3,7 @@
  *   - LIMIT de thread: 50
  *   - LIMIT de message: 30 por thread
  */
-SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0) ORDER BY created_time DESC
+SELECT body, message_id FROM message WHERE thread_id IN (SELECT thread_id FROM thread WHERE folder_id=0 ORDER BY updated_time DESC LIMIT 50 OFFSET 150) ORDER BY created_time DESC
 
 
 /* Descrição: Pega todos os posts da linha do tempo do usuário
