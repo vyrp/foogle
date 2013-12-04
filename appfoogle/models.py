@@ -24,10 +24,7 @@ class Messages(ndb.Model):
 
 class User(ndb.Model):
     uid = ndb.StringProperty(required=True)
-    access_token = ndb.StringProperty(indexed=False)
-    msg_timestamp = ndb.IntegerProperty(default=0, indexed=False)
-    pst_timestamp = ndb.IntegerProperty(default=0, indexed=False)
-    cmt_timestamp = ndb.IntegerProperty(default=0, indexed=False)
+    last_timestamp = ndb.IntegerProperty(default=0, indexed=False)
     is_populating = ndb.BooleanProperty(default=False, indexed=False)
 
     @classmethod

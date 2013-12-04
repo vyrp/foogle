@@ -208,7 +208,7 @@ class MultiSearchHandler(SearchHandler):
 
         sortedKeys = sorted(allOcurrences, key=allOcurrences.get, reverse=True)
 
-        fbids = [{}] * len(sortedKeys)  # Possivel fonte de BUG!!!!
+        fbids = [0] * len(sortedKeys)
 
         for i, key in enumerate(sortedKeys):
             fbids[i] = self.getObjectFromHash(key)
