@@ -53,6 +53,10 @@
 	width: 56%;
 }
 
+.little-left{
+	margin-left: 10px;
+}
+
 #pseudo-dropdown { /*image dimensions: 488px x 108px;*/
 	margin-left: 22%;
 	margin-top: 5px;
@@ -76,10 +80,19 @@ td{
 	padding-right: 20px;
 }
 
+.username-field{
+	white-space: nowrap;
+}
+
 .said-when{
 	color: #AAA;
 }
 
 .big{
 	font-size: 25px;
+}
+
+.profile-pic{
+	height: 40px;
+	padding-left: 3px;
 }

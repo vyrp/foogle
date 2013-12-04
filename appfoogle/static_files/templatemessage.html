@@ -1,6 +1,6 @@
-<div class="panel panel-default">
+<div class="panel panel-default little-left">
   <div class="panel-heading">
-    <a class="big panel-title" href={{result.mess_link}}>Conversation {{result.isgrouptalk?"on GROUP":"with PERSON"}}, DATE</a>
+    <a class="big panel-title" href={{result.mess_link}}>Conversation {{result.isgrouptalk?"on GROUP":"with PERSON"}} about {{result.response[0].created_time}}</a>
   </div>
   
   <table>
@@ -13,9 +13,9 @@
     </thead>
     <tbody>
       <tr ng-repeat="phrase in result.response">
-        <td class="said-who"><a href={{"http://facebook.com/"+phrase.author_id}}>{{phrase.author_id}}:</a></td>
-        <td class="said-what">{{phrase.body}}</td>
-        <td class="said-when">{{phrase.created_time}}</td>
+        <td class="username-field"><img class="profile-pic" src={{phrase.pic}} href={{"http://facebook.com/"+phrase.author_id}}></img> <a href={{"http://facebook.com/"+phrase.author_id}}><span>{{phrase.name}}</span></a></td>
+        <td>{{phrase.body}}</td>
+        <td>{{phrase.created_time}}</td>
       </tr>
     </tbody>
   </table>
