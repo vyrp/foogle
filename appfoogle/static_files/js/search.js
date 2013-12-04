@@ -1,3 +1,36 @@
+function getNameAndPhoto(response,uidfunc,callback){
+	uidlist = [];
+	for(var i=0;i<response.length;i++){
+		uidlist.push(uidfunc(response[i]));
+	}
+	query = "SELECT uid,name, pic_small FROM user WHERE uid IN \(\"" + uidlist.join('", "') + "\"\)"
+	FB.api(
+	  {
+	    method: 'fql.query',
+	    query: query
+	  },
+	  function(users) {
+	  	for(var i=0;i<response.length;i++){
+			for(var j = 0; j<users.length ;j++){
+				if(uidfunc(response[i]) == users[j].uid){
+					response[i].pic = users[j].pic_small;
+					response[i].name = users[j].name;
+					break;
+				}	
+			}
+		}
+
+	  	callback(response);
+		return;
+	  	
+	  });
+	return;
+
+}
+
+
+
+
 function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptalk, conversation_id){
 	timestamp=parseInt(timestamp);
 	delta=parseInt(delta);
@@ -20,12 +53,12 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 		  	else{
 		  		conversation_id = response[0].viewer_id == recipients[0]?recipients[1]:recipients[0];
 		  	}
-		  	
-		  	queryMessage(message_id,timestamp,Math.floor(delta/2),callback,thread_id,isgrouptalk,conversation_id);
+			console.log("got thread_id");  	
+		  	queryMessage(message_id,timestamp,Math.floor(delta),callback,thread_id,isgrouptalk,conversation_id);
 		  });
   		return;
 	}
-
+	console.log("querying with delta " + delta);  	
 	uplimit=(timestamp+delta);
 	lowlimit=(timestamp-delta);
 	query='SELECT body,message_id,author_id,created_time FROM message WHERE thread_id = "' + thread_id + '"  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
@@ -37,7 +70,10 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 	  function(response) {
 	  	 
 	  	if(JSON.stringify(response).indexOf(message_id)!=-1){
-	  		callback(response,conversation_id,isgrouptalk);
+
+	  		getNameAndPhoto(response,function(x){return x.author_id},function(newresponse){
+	  			callback(newresponse,conversation_id,isgrouptalk);
+	  		});
 	  	}
 	  	else{
 	  		queryMessage(message_id,timestamp,Math.floor(delta/2),callback,thread_id,isgrouptalk,conversation_id);
@@ -55,7 +91,11 @@ function queryPost(post_id,callback){
 	    query: query
 	  },
 	  function(response) {
-	  	callback(response);
+	  	getNameAndPhoto(response,function(x){return x.actor_id},function(newresponse){
+
+	  		callback(newresponse);
+	  	});
+	  	
 	  });
 }
 
@@ -69,7 +109,10 @@ function queryComment(comment_id,callback){
 	  function(response) {
 	  	post_id=response[0].post_id;
 	  	queryPost(post_id,function(post_data){
-	  		callback(response,post_data);
+	  		getNameAndPhoto(response,function(x){return x.fromid},function(newresponse){
+	  			callback(newresponse,post_data);
+	  		});
+	  		
 	  	});
 
 	  	
