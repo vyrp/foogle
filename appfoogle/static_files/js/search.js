@@ -28,7 +28,7 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 
 	uplimit=(timestamp+delta);
 	lowlimit=(timestamp-delta);
-	query='SELECT body,message_id,author_id FROM message WHERE thread_id = "' + thread_id + '"  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
+	query='SELECT body,message_id,author_id,created_time FROM message WHERE thread_id = "' + thread_id + '"  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -48,7 +48,7 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 
 
 function queryPost(post_id,callback){
-	query='SELECT post_id,message,actor_id,like_info,share_info FROM stream WHERE post_id="' + post_id + '"';	 
+	query='SELECT post_id,message,actor_id,like_info,share_info,created_time FROM stream WHERE post_id="' + post_id + '"';	 
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -60,7 +60,7 @@ function queryPost(post_id,callback){
 }
 
 function queryComment(comment_id,callback){
-	query='SELECT likes,text,post_id,fromid,id FROM comment WHERE id="' + comment_id + '"';	 
+	query='SELECT likes,text,post_id,fromid,id,time FROM comment WHERE id="' + comment_id + '"';	 
 	FB.api(
 	  {
 	    method: 'fql.query',
@@ -86,4 +86,7 @@ function getMessageLink(conversation_id,isgrouptalk){
 	}
 	return "https://www.facebook.com/messages/conversation-id." + conversation_id;
 }
+
+
+
 
