@@ -61,6 +61,8 @@ function searchBar($scope, Data){
             "filter": custom_filter
            }),
           function(response) {
+              console.log(response);
+              return; 
               data=JSON.parse(response).data;
 
               for(i in data){

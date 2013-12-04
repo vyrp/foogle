@@ -8,8 +8,7 @@ from google.appengine.ext import deferred
 from models import *
 from preprocess import preprocess
 from tasks import populate, FQL
-
-from puthandlers import *
+from puthandlers import SentencePutter
 
 
 class JsonRequestHandler(webapp2.RequestHandler):
@@ -70,7 +69,7 @@ class SearchHandler(JsonRequestHandler):
         try:
             gqlOcurrences = cls.query(
                 ndb.AND(
-                    cls.uid_word == uid + "_" + word),
+                    cls.uid_word == uid + "_" + word,
                     ndb.AND(cls.timestamp <= dateto, cls.timestamp >= datefrom)
                 )
             ).order(cls.timestamp)
