@@ -14,3 +14,17 @@ foogleApp.directive("messageresult", function(){
     templateUrl: "/templatemessage.html"
   }
 });
+
+foogleApp.directive("postresult", function(){
+  return {
+    restrict: "E",
+    templateUrl: "/templatepost.html"
+  }
+});
+
+foogleApp.directive("commentresult", function(){
+  return {
+    restrict: "E",
+    templateUrl: "/templatecomment.html"
+  }
+});

@@ -1,19 +1,20 @@
-<div class="panel-heading">
-  <a class="big panel-title" href={{result.mess_link}}>Conversation {{result.isgrouptalk?"on GROUP":"with PERSON"}}, DATE</a>
-</div>
-
-<table>
-  <thead>
-    <tr>
-      <th>Who</th>
-      <th>Said What</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="phrase in result.response">
-      <td class="said-who">{{phrase.author_id}}:</td>
-      <td>{{phrase.body}}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <a class="big panel-title" href={{result.mess_link}}>Conversation {{result.isgrouptalk?"on GROUP":"with PERSON"}}, DATE</a>
+  </div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Who</th>
+        <th>Said What</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="phrase in result.response">
+        <td class="said-who">{{phrase.author_id}}:</td>
+        <td>{{phrase.body}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -52,9 +52,15 @@
     <img src="static_files/images/FoogleMainAlter.png" id="alter-logo" alt="foogle"/>
     <searchbar cssclass="quasi-left"></searchbar>
     <hr/>
-    <div class="panel panel-default" ng-repeat="result in data.results">
-      <div>
+    <div ng-repeat="result in data.results">
+      <div ng-if=result.ismessage>
         <messageresult></messageresult>
+      </div>
+      <div ng-if=result.ispost>
+        <postresult></postresult>
+      </div>
+      <div ng-if=result.iscomment>
+        <commentresult></commentresult>
       </div>
     </div>
 

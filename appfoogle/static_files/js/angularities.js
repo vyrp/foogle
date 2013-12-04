@@ -9,8 +9,7 @@ alloptions: true,
 posts: true,
 comments: true,
 chat:true,
-results:[],
-ismessage:true
+results:[]
     };
 })
 
@@ -96,11 +95,14 @@ function searchBar($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='c';
+                    data[i].type='m';
                     switch(data[i].type){
                     case 'm':
                         //message_id="388551281214203_154007";
                         //timestamp=1386107311;
+                        single_result.ismessage = true;
+                        single_result.ispost = false;
+                        single_result.iscomment = false;
 
                         message_id="466050320176931_168";//data.fbid
                         timestamp="1385963939";//data.timestamp
@@ -119,14 +121,21 @@ function searchBar($scope, Data){
 
                         break;
                     case 'p':
+                        single_result.ismessage = false;
+                        single_result.ispost = true;
+                        single_result.iscomment = false;
                         post_id="100000099637951_411059209010431";//data.fbid
-                        console.log(getPostLink(post_id));
+                        var post_link = getPostLink(post_id)
+                        // console.log(post_link);
                         queryPost(post_id,function(response){
                             single_result.response = response;
                             // console.log(response);
                         });
                         break;
                     case 'c':
+                        single_result.ismessage = false;
+                        single_result.ispost = false;
+                        single_result.iscomment = true;
                         comment_id="411272562322429";//data.fbid
                         queryComment(comment_id,function(response,post_data){
                             single_result.response = response;
