@@ -96,7 +96,7 @@ function searchBar($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='m';
+                    data[i].type='c';
                     switch(data[i].type){
                     case 'm':
                         //message_id="388551281214203_154007";
@@ -110,7 +110,7 @@ function searchBar($scope, Data){
                         delta=1000;
                         queryMessage(message_id,timestamp,delta,function(response,conversation_id,isgrouptalk){
                             single_result.response = response;
-                            // console.log(response);
+                            console.log(response);
                             single_result.conversation_id = conversation_id;
                             // console.log(conversation_id);
                             single_result.isgrouptalk = isgrouptalk;
@@ -130,7 +130,7 @@ function searchBar($scope, Data){
                         // console.log(post_link);
                         queryPost(post_id,function(response){
                             single_result.response = response;
-                            // console.log(response);
+                            console.log(response);
                         });
                         break;
                     case 'c':
@@ -140,9 +140,9 @@ function searchBar($scope, Data){
                         comment_id="411272562322429";//data.fbid
                         queryComment(comment_id,function(response,post_data){
                             single_result.response = response;
-                            // console.log(response);
+                            console.log(response);
                             single_result.post_data = post_data;
-                            // console.log(post_data);
+                            console.log(post_data);
                             post_id = post_data[0].post_id;
                             single_result.post_link = post_link;
                             var post_link = getPostLink(post_id);
