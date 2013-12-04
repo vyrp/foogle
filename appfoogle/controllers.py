@@ -9,6 +9,8 @@ from models import *
 from preprocess import preprocess
 from tasks import populate, FQL
 
+from puthandlers import *
+
 
 class JsonRequestHandler(webapp2.RequestHandler):
     def parseJson(self):
@@ -119,8 +121,15 @@ class PutCommentHandler(webapp2.RequestHandler):
         except:
             self.response.write('400 invalid json in request body')
             return
-        comment = Comments(uid=body['uid'], fbid=body['fbid'], word=body['word'], timestamp=1)
-        comment.put()
+        sp = SentencePutter(Comments)
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence1'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence2'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.put(sentence=body['sentence'], uid=body['uid'], fbid=body['fbid'], timestamp=body['timestamp'])
+        sp.flush()
         response = {'status': 'success'}
         self.response.write(json.dumps(response))
 

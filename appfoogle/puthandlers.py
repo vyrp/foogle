@@ -1,0 +1,24 @@
+import webapp2
+from models import *
+from preprocess import preprocess
+import re
+from google.appengine.ext import ndb
+
+class SentencePutter():
+
+	def __init__(self, cls):
+		self.modelList = set()
+		self.cls = cls
+
+	def put(self, sentence, uid, fbid, timestamp):
+		wordList = re.split(r"\s", sentence)
+		wordList = [preprocess(word) for word in wordList]
+		modelList = [(uid, fbid, word, timestamp) for word in wordList if word != ""]
+		self.modelList = self.modelList.union(modelList)
+		if(len(self.modelList)>=1000):
+			self.flush()
+
+	def flush(self):
+		modelList = [self.cls(uid=x[0], fbid=x[1], word=x[2], timestamp=x[3]) for x in self.modelList]
+		ndb.put_multi(list(modelList))
+
