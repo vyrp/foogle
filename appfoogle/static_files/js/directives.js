@@ -7,3 +7,10 @@ foogleApp.directive("searchbar", function(){
     }
   }
 });
+
+foogleApp.directive("messageresult", function(){
+  return {
+    restrict: "E",
+    templateUrl: "/templatemessage.html"
+  }
+});

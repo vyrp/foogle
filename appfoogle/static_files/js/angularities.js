@@ -9,7 +9,8 @@ alloptions: true,
 posts: true,
 comments: true,
 chat:true,
-results:[]
+results:[],
+ismessage:true
     };
 })
 
