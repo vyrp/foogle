@@ -46,10 +46,10 @@
       <div class="tab-pane fade" id={{"when"+count}}>
         <ul>
           <li class="padded-li">
-            <span>Since: <input type="text" id="datepicker1" ng-model="data.from"></span>
+            <span>Since: <input type="text" id={{"datepicker"+(count+1)}} ng-model="data.from"></span>
           </li>
           <li class="padded-li">
-            <span>Until:  <input type="text" id="datepicker2" ng-model="data.to"></span>
+            <span>Until:  <input type="text" id={{"datepicker"+(count+2)}} ng-model="data.to"></span>
           </li>
         </ul>
       </div>
