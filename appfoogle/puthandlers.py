@@ -10,6 +10,7 @@ class SentencePutter():
     def __init__(self, cls):
         self.modelList = set()
         self.cls = cls
+        self.count = 0
 
     def put(self, sentence, uid, fbid, timestamp):
         wordList = re.split(r"\s", sentence)
@@ -20,6 +21,9 @@ class SentencePutter():
             self.flush()
 
     def flush(self):
+        if self.count > 2000:
+            return
         modelList = [self.cls(uid_word=x[0] + "_" + x[2], fbid=x[1], timestamp=x[3]) for x in self.modelList]
         ndb.put_multi(list(modelList))
+        self.count += len(modelList)
         self.modelList = set()

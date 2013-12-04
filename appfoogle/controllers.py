@@ -69,8 +69,8 @@ class SearchHandler(JsonRequestHandler):
         try:
             gqlOcurrences = cls.query(cls.uid_word == uid + "_" + word)
             ocurrences = gqlOcurrences.fetch(offset=0, limit=10000)
-            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp<=dateto and ocurrence.timestamp>=datefrom]
-            ocurrences = sorted(ocurrences,key=lambda x:x.timestamp)
+            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp <= dateto and ocurrence.timestamp >= datefrom]
+            ocurrences = sorted(ocurrences, key=lambda x: x.timestamp)
         except:
             self.response.write('500 error querying database')
             return None
@@ -314,6 +314,6 @@ class PopulateHandler(webapp2.RequestHandler):
             logging.exception('Exception in PopulateHandler')
             status = 'exception'
 
-        self.response.write(json.dumps({
-            'status': status
-        }))
+            self.response.write(json.dumps({
+                'status': status
+            }))
