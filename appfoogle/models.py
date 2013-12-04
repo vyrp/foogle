@@ -4,19 +4,19 @@ from google.appengine.ext import ndb
 class Comments(ndb.Model):
     uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    timestamp = ndb.IntegerProperty(required=True)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class Posts(ndb.Model):
     uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    timestamp = ndb.IntegerProperty(required=True)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class Messages(ndb.Model):
     uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    timestamp = ndb.IntegerProperty(required=True)
+    timestamp = ndb.IntegerProperty(required=True, indexed=False)
 
 
 class User(ndb.Model):

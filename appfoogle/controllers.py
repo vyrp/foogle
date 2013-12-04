@@ -67,17 +67,14 @@ class SearchHandler(JsonRequestHandler):
 
     def queryOcurrences(self, uid, word, offset, limit, cls, datefrom, dateto):
         try:
-            gqlOcurrences = cls.query(
-                ndb.AND(
-                    cls.uid_word == uid + "_" + word,
-                    ndb.AND(cls.timestamp <= dateto, cls.timestamp >= datefrom)
-                )
-            ).order(cls.timestamp)
-            ocurrences = gqlOcurrences.fetch(offset=offset, limit=limit)
+            gqlOcurrences = cls.query(cls.uid_word == uid + "_" + word)
+            ocurrences = gqlOcurrences.fetch(offset=0, limit=10000)
+            ocurrences = [ocurrence for ocurrence in ocurrences if ocurrence.timestamp<=dateto and ocurrence.timestamp>=datefrom]
+            ocurrences = sorted(ocurrences,key=lambda x:x.timestamp)
         except:
             self.response.write('500 error querying database')
             return None
-        return ocurrences
+        return ocurrences[offset:offset + limit]
 
     def processOcurrences(self, ocurrences):
         fbids = [0] * len(ocurrences)
