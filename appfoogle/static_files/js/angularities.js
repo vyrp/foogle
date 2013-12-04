@@ -96,7 +96,7 @@ function searchBar($scope, Data){
                 console.log(data);
                 for(i in data){
                     var single_result = {};
-                    data[i].type='c';
+                    data[i].type='m';
                     switch(data[i].type){
                     case 'm':
                         //message_id="388551281214203_154007";

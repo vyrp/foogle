@@ -53,12 +53,12 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 		  	else{
 		  		conversation_id = response[0].viewer_id == recipients[0]?recipients[1]:recipients[0];
 		  	}
-			console.log("got thread_id");  	
+			// console.log("got thread_id");  	
 		  	queryMessage(message_id,timestamp,Math.floor(delta),callback,thread_id,isgrouptalk,conversation_id);
 		  });
   		return;
 	}
-	console.log("querying with delta " + delta);  	
+	// console.log("querying with delta " + delta);  	
 	uplimit=(timestamp+delta);
 	lowlimit=(timestamp-delta);
 	query='SELECT body,message_id,author_id,created_time FROM message WHERE thread_id = "' + thread_id + '"  AND created_time>=' + lowlimit + ' AND created_time<=' + uplimit + ' ORDER BY created_time DESC';
