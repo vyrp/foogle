@@ -2,23 +2,20 @@ from google.appengine.ext import ndb
 
 
 class Comments(ndb.Model):
-    uid = ndb.StringProperty(required=True)
+    uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    word = ndb.StringProperty(required=True)
     timestamp = ndb.IntegerProperty(required=True)
 
 
 class Posts(ndb.Model):
-    uid = ndb.StringProperty(required=True)
+    uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    word = ndb.StringProperty(required=True)
     timestamp = ndb.IntegerProperty(required=True)
 
 
 class Messages(ndb.Model):
-    uid = ndb.StringProperty(required=True)
+    uid_word = ndb.StringProperty(required=True)
     fbid = ndb.StringProperty(required=True, indexed=False)
-    word = ndb.StringProperty(required=True)
     timestamp = ndb.IntegerProperty(required=True)
 
 

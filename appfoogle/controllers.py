@@ -70,7 +70,7 @@ class SearchHandler(JsonRequestHandler):
         try:
             gqlOcurrences = cls.query(
                 ndb.AND(
-                    ndb.AND(cls.uid == uid, cls.word == word),
+                    cls.uid_word == uid + "_" + word),
                     ndb.AND(cls.timestamp <= dateto, cls.timestamp >= datefrom)
                 )
             ).order(cls.timestamp)

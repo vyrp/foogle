@@ -19,7 +19,7 @@ class SentencePutter():
         if(len(self.modelList) >= 1000):
             self.flush()
 
-    def flush(self):
-        modelList = [self.cls(uid=x[0], fbid=x[1], word=x[2], timestamp=x[3]) for x in self.modelList]
-        ndb.put_multi(list(modelList))
-        self.modelList = set()
+	def flush(self):
+		modelList = [self.cls(uid_word=x[0] + "_" + x[2], fbid=x[1], timestamp=x[3]) for x in self.modelList]
+		ndb.put_multi(list(modelList))
+		self.modelList = set()
