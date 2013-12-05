@@ -3,7 +3,8 @@ var userLogged = false;
 window.fbAsyncInit = function() {
     FB.init({ 
         //appId      : '394904207304456',                        // ID for Deploy
-        appId      :  '336910786453085',                         // ID for local
+        //appId      :  '336910786453085',                         // ID for local
+        appId      :  '408153019287497',                         // ID for local
         status     : true,                                       // Check Facebook Login status
         xfbml      : true                                        // Look for social plugins on the page
         //channelUrl : '//appfoogle.appspot.com/channel.html',   // Channel file for x-domain comms

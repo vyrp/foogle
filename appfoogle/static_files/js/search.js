@@ -38,12 +38,14 @@ function queryMessage(message_id,timestamp,delta,callback, thread_id, isgrouptal
 	if(thread_id == undefined){
 
 		query = "SELECT recipients,thread_id,viewer_id FROM thread WHERE thread_id IN \(" + 'SELECT thread_id FROM message WHERE message_id="' + message_id + '"\)'
+        console.log(query)
   		FB.api(
 		  {
 		    method: 'fql.query',
 		    query: query
 		  },
 		  function(response) {
+            console.log(response)
 		  	recipients = response[0].recipients;
 		  	isgrouptalk = recipients.length>2;
 		  	thread_id = response[0].thread_id;	

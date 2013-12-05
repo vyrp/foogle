@@ -5,6 +5,10 @@ import re
 from google.appengine.ext import ndb
 
 
+def clamp(word):
+    return word if len(word) < 500 else word[0:500]
+
+
 class SentencePutter():
 
     def __init__(self, cls):
